@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+<argument name="data" xsi:type="array">
+    <item name="js_config" xsi:type="array">
+        <item name="provider" xsi:type="string">room_type_form.room_type_form_data_source</item>
+        <item name="deps" xsi:type="string">room_type_form.room_type_form_data_source</item>
+    </item>
+    <item name="label" xsi:type="string" translate="true">General Information</item>
+    <item name="config" xsi:type="array">
+        <item name="dataScope" xsi:type="string">data</item>
+        <item name="namespace" xsi:type="string">room_type_form</item>
+    </item>
+    <item name="template" xsi:type="string">templates/form/collapsible</item>
+
+    <item name="buttons" xsi:type="array">
+        <item name="back" xsi:type="array">
+            <item name="name" xsi:type="string">back</item>
+            <item name="label" xsi:type="string" translate="true">Back</item>
+            <item name="class" xsi:type="string">back</item>
+            <item name="url" xsi:type="string">*/*/</item>
+        </item>
+        <item name="save" xsi:type="string">Yogesh\ProductFinder\Block\Adminhtml\Index\Edit\Button\Save</item>
+        <item name="reset" xsi:type="string">Yogesh\ProductFinder\Block\Adminhtml\Index\Edit\Button\Reset</item>
+        <item name="delete" xsi:type="string">Yogesh\ProductFinder\Block\Adminhtml\Index\Edit\Button\Delete</item>
+    </item>
+</argument>
+<dataSource name="room_type_form_data_source">
+    <argument name="dataProvider" xsi:type="configurableObject">
+        <argument name="class" xsi:type="string">Yogesh\ProductFinder\Ui\DataProvider</argument>
+        <argument name="name" xsi:type="string">room_type_form_data_source</argument>
+        <argument name="primaryFieldName" xsi:type="string">id</argument>
+        <argument name="requestFieldName" xsi:type="string">id</argument>
+        <argument name="data" xsi:type="array">
+            <item name="config" xsi:type="array">
+                <item name="submit_url" xsi:type="url" path="*/*/save"/>
+            </item>
+        </argument>
+    </argument>
+    <argument name="data" xsi:type="array">
+        <item name="js_config" xsi:type="array">
+            <item name="component" xsi:type="string">Magento_Ui/js/form/provider</item>
+        </item>
+    </argument>
+</dataSource>
+<fieldset name="general">
+    <argument name="data" xsi:type="array">
+        <item name="config" xsi:type="array">
+            <item name="collapsible" xsi:type="boolean">false</item>
+            <item name="label" xsi:type="string" translate="true">General Information</item>
+            <item name="sortOrder" xsi:type="number">10</item>
+        </item>
+    </argument>
+    <field name="room_category">
+        <argument name="data" xsi:type="array">
+            <item name="config" xsi:type="array">
+                <item name="dataType" xsi:type="string">text</item>
+                <item name="label" xsi:type="string" translate="true">Room Type</item>
+                <item name="formElement" xsi:type="string">input</item>
+                <item name="source" xsi:type="string">room_category</item>
+                <item name="dataScope" xsi:type="string">room_category</item>
+            </item>
+        </argument>
+    </field>
+    <field name="room_icon">
+        <argument name="data" xsi:type="array">
+            <item name="config" xsi:type="array">
+                <item name="dataType" xsi:type="string">string</item>
+                <item name="source" xsi:type="string">Room Type Icon</item>
+                <item name="label" xsi:type="string" translate="true">Room Type Icon</item>
+                <item name="visible" xsi:type="boolean">true</item>
+                <item name="formElement" xsi:type="string">fileUploader</item>
+                <item name="elementTmpl" xsi:type="string">ui/form/element/uploader/uploader</item>
+                <item name="previewTmpl" xsi:type="string">Omnie_ProductFinder/image-preview</item>
+                <item name="required" xsi:type="boolean">false</item>
+                <item name="sortOrder" xsi:type="number">23</item>
+                <item name="uploaderConfig" xsi:type="array">
+                    <item name="url" xsi:type="url" path="*/*/tempUpload"/>
+                </item>
+            </item>
+        </argument>
+    </field>
+</fieldset>
+</form>

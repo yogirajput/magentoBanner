@@ -1,0 +1,35 @@
+{
+    "omnie_room_category": {
+        "column": {
+            "id": true,
+            "room_category": true,
+            "room_icon": true,
+            "created_at": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    },
+    "omnie_blind_category": {
+        "column": {
+            "id": true,
+            "blind_category": true,
+            "blind_icon": true,
+            "created_at": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    },
+    "omnie_material_category": {
+        "column": {
+            "id": true,
+            "material_category": true,
+            "material_icon": true,
+            "created_at": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    }
+}

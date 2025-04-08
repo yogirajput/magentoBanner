@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <attribute name="class" value="page-products"/>
+        <referenceContainer name="content">
+            <block class="Magento\Framework\View\Element\Template" name="product.finder"
+                   template="Omnie_ProductFinder::default.phtml">
+                <block class="Magento\Framework\View\Element\Template"
+                       name="product.finder.product.list" as="product.finder.product.list" template="Omnie_ProductFinder::product/list.phtml"/>
+            </block>
+        </referenceContainer>
+    </body>
+</page>

@@ -1,0 +1,656 @@
+<?php
+/** @var \Magento\Framework\View\Element\Template $block */
+/** @var \Yogesh\ProductFinder\Helper\Data $dataHelper */
+$dataHelper = $this->helper('Yogesh\ProductFinder\Helper\Data');
+?>
+<?php $productlabel =  \Magento\Framework\App\ObjectManager::getInstance()->get(\Magento\Framework\App\Config\ScopeConfigInterface::class)->getValue('catalog/product_finder/productfinder_heading', \Magento\Store\Model\ScopeInterface::SCOPE_STORE);
+
+?>
+<section class="product-finder-wrapper">
+    <div class="container">
+        <div class="step-name-container">
+            <button class="sb-btn brown-btn resetBtn desktop" onClick="window.location.reload()">Reset</button>
+            <ul class="list-reset step-list">
+                <li class="active">
+                    <a href="javascript: void(0)" data-id="step1">
+                        <span class="step-circle"></span>
+                        <span class="step-name">Dimension</span>
+                    </a>
+                </li>
+				<li>
+                    <a href="javascript: void(0)" data-id="step2">
+                        <span class="step-circle"></span>
+                        <span class="step-name">Colour</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="javascript: void(0)" data-id="step3">
+                        <span class="step-circle"></span>
+                        <span class="step-name">Room Type</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="javascript: void(0)" data-id="step4">
+                        <span class="step-circle"></span>
+                        <span class="step-name">Blind Type</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="javascript: void(0)" data-id="step5">
+                        <span class="step-circle"></span>
+                        <span class="step-name">Materials</span>
+                    </a>
+                </li>
+                
+                <li>
+                    <a href="javascript: void(0)" data-id="step6">
+                        <span class="step-circle"></span>
+                        <span class="step-name">Features</span>
+                    </a>
+                </li>
+            </ul>
+            <a href="javascript: void(0)" class="sb-btn brown-btn see-all-btn desktop" style="display: none;">See all
+                <span
+                        class="products_count"></span></a>            
+        </div>
+        <a href="javascript: void(0)" class="sb-btn brown-btn see-all-btn mobile" style="display: none;">See all <span
+                    class="products_count"></span></a>
+        <button class="sb-btn brown-btn resetBtn mobile" onClick="window.location.reload()">Reset</button>
+		<form id="product_finder_form" method="post" action="" >
+        <div class="row">
+            <div class="col-12 col-md-3">
+                <div class="find-filter-container">
+                    <div class="help-find-text"><span><?php echo $productlabel ? $productlabel : 'Let us help you find<br> your product'; ?></span> <a
+                                href="javascript: void(0)" class="back-btn-mobile"><span><img
+                                        src="images/icons/mobile-back-btn.svg" alt=""></span>Back</a></div>
+                    <ul class="list-reset find-filter-list">
+                        <!-- <li class="width-drop-filter-list"><span class="find-filter-dot"></span> <span
+                                class="find-filter-name">W 0, D 0<span class="close-find-filter"></span></span></li> -->
+                    </ul>
+                </div>
+            </div>
+            <div class="col-12 col-md-9">
+                <div class="steps-product" id="step1">
+                    <div class="row">
+                        <div class="col-md-8 col-12">
+                            <div class="steps-title">
+                                <h5><span><span class="colored-step">1</span>/6</span>Enter your window dimensions.</h5>
+                            </div>
+                            <div class="unit-group">
+                                <div class="c-radio">
+                                    <input type="radio" id="mm" name="size" value="mm" checked="" class="calculate-price-fields">
+                                    <label for="mm">mm</label>
+                                </div>
+                                <div class="c-radio">
+                                    <input type="radio" id="cm" name="size" value="cm" class="calculate-price-fields" >
+                                    <label for="cm">cm</label>
+                                </div>
+                                <div class="c-radio">
+                                    <input type="radio" id="inch" name="size" value="inch" class="calculate-price-fields">
+                                    <label for="inch">inch</label>
+                                </div>
+                            </div>
+                            <div class="width-drop">
+                                <div class="product-width">
+                                    <span>Width*</span>
+                                    <input name="filter-width" id="filter-width" inputmode="numeric" type="text" class="form-control width numbersOnly calculate-price-fields"
+                                           value="">
+										   <span class="validation-message"
+                          style="display: none;"><?php echo __('Size exceeds limit'); ?></span>
+                                </div>
+                                <div class="product-drop">
+                                    <span>Drop*</span>
+                                    <input name="filter-drop" id="filter-drop" inputmode="numeric" type="text" class="form-control drop numbersOnly calculate-price-fields"
+                                           value="">
+										   <span class="validation-message"
+                          style="display: none;"><?php echo __('Size exceeds limit'); ?></span>
+                                </div>
+                            </div>
+                            <div class="apply-filter-btns">
+                                <div class="action-btn">
+                                    <a href="javascript: void(0)" class="dimension-next-btn sb-btn brown-btn ">Next</a>
+                                    <a href="javascript: void(0)" class="dimension-next-btn1 sb-btn brown-btn " style="display:none;">Next</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-12">
+                            <img src="<?php echo $this->getViewFileUrl('images/measurement-window.svg'); ?>"
+                                 class="measurement-window">
+                        </div>
+                    </div>
+                </div>
+                
+				<div class="steps-product" id="step2">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="step-inner">
+                                <div class="steps-title">
+                                    <h5><span><span class="colored-step">2</span>/6</span>Select your preferred
+                                        colour(s).</h5>
+                                </div>
+                                <div class="image-selection three-group color-grp-one">
+                                    <ul class="list-reset selection-list">
+                                        <?php $colorList = $dataHelper->getColorList(); ?>
+                                        <?php foreach ($colorList as $value => $colorInfo): ?>
+                                            <?php $isSwatchImage = isset($colorInfo['is_swatch_image'])? $colorInfo['is_swatch_image']: false;?>
+                                            <li class="color-list <?php echo $colorInfo['label']; ?> umbrella_colour_<?php echo $colorInfo['id']; ?>">
+                                                <div class="image-selection-img <?php echo strtolower(str_replace('/', '-', $colorInfo['label'])); ?>">
+                                                    <?php if($isSwatchImage) {?>
+                                                    <img src="<?php echo $colorInfo['swatch_color']; ?>"
+                                                         alt="">
+                                                    <?php } else { ?>
+                                                        <div style="background-color: <?php echo $colorInfo['swatch_color']; ?>;height: 165px;
+                                                                width: 165px"></div>
+                                                    <?php } ?>
+                                                    <label class="checkbox-container">
+                                                        <input name="umbrella_colour[]" data-attribute="umbrella_colour"
+                                                               class="filter-selection" type="checkbox"
+                                                               value="<?php echo $colorInfo['id']; ?>"/>
+                                                        <span class="checkmark"></span>
+                                                    </label>
+                                                </div>
+                                                <div class="image-selection-text"><?php echo $colorInfo['label'] ?></div>
+                                            </li>
+                                        <?php endforeach; ?>
+                                    </ul>
+                                    <div class="apply-filter-btns">
+                                        <div class="action-btn">
+                                            <!--a href="javascript: void(0)" class="border-btn sb-btn select-all-option">Select
+                                                All</a-->
+                                            <a href="javascript: void(0)" class="sb-btn brown-btn next-btn">Next</a>
+                                        </div>
+                                        <!--div class="skip-btn">
+                                            <a href="javascript: void(0)" id="skipStep">Skip This Step</a>
+                                        </div-->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+				<div class="steps-product" id="step3">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="step-inner">
+                                <div class="steps-title">
+                                    <h5><span><span class="colored-step">3</span>/6</span>Which room(s) is this window
+                                        in?</h5>
+                                </div>
+                                <div class="image-selection three-group">
+                                    <ul class="list-reset selection-list">
+                                        <?php $roomTypeList = $dataHelper->getRoomType(); ?>
+                                        <?php foreach ($roomTypeList as $value => $info): ?>
+                                            <li class="room_category_list <?php echo 'room_category_' . $value; ?>">
+                                                <div class="image-selection-img">
+                                                    <img src="<?php echo $info['swatch_image']; ?>" alt="">
+                                                    <label class="checkbox-container">
+                                                        <input name="room_category[]" data-attribute="room_category"
+                                                               class="filter-selection" type="checkbox"
+                                                               value="<?php echo $value; ?>"/>
+                                                        <span class="checkmark"></span>
+                                                    </label>
+                                                </div>
+                                                <div class="image-selection-text"><?php echo $info['label']; ?></div>
+                                            </li>
+                                        <?php endforeach; ?>
+                                    </ul>
+                                    <div class="apply-filter-btns">
+                                        <div class="action-btn">
+                                            <!--a href="javascript: void(0)" class="border-btn sb-btn select-all-option">Select
+                                                All</a-->
+                                            <a href="javascript: void(0)" class="sb-btn brown-btn next-btn">Next</a>
+                                        </div>
+                                        <div class="skip-btn">
+                                            <a href="javascript: void(0)" id="skipStep">Skip This Step</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="steps-product" id="step4">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="step-inner">
+                                <div class="steps-title">
+                                    <h5><span><span class="colored-step">4</span>/6</span>Select your blind type(s).
+                                    </h5>
+                                </div>
+                                <div class="image-selection four-group">
+                                    <ul class="list-reset selection-list">
+                                        <?php $blindTypeList = $dataHelper->getBlindType(); ?>
+                                        <?php foreach ($blindTypeList as $value => $info): ?>
+                                            <li class="blind-type-list <?php echo 'blind_category_' . $value; ?>" style="display:none;">
+                                                <div class="image-selection-img">
+                                                    <img src="<?php echo $info['swatch_image']; ?>" alt="">
+                                                    <label class="checkbox-container">
+                                                        <input name="blind_category[]" data-attribute="blind_category"
+                                                               class="filter-selection" type="checkbox"
+                                                               value="<?php echo $value; ?>"/>
+                                                        <span class="checkmark"></span>
+                                                    </label>
+                                                </div>
+                                                <div class="image-selection-text"><?php echo $info['label']; ?></div>
+                                            </li>
+                                        <?php endforeach; ?>
+                                    </ul>
+                                    <div class="apply-filter-btns">
+                                        <div class="action-btn">
+                                            <!--a href="javascript: void(0)" class="border-btn sb-btn select-all-option">Select
+                                                All</a-->
+                                            <a href="javascript: void(0)" class="sb-btn brown-btn next-btn">Next</a>
+                                        </div>
+                                        <div class="skip-btn">
+                                            <a href="javascript: void(0)" id="skipStep">Skip This Step</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="steps-product" id="step5">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="step-inner">
+                                <div class="steps-title">
+                                    <h5><span><span class="colored-step">5</span>/6</span>Select your preferred material
+                                        (if
+                                        required).</h5>
+                                </div>
+                                <div class="image-selection three-group">
+                                    <ul class="list-reset selection-list">
+                                        <?php $materialTypeList = $dataHelper->getMaterialType(); ?>
+                                        <?php foreach ($materialTypeList as $value => $info): ?>
+                                            <li class="material-type-list <?php echo 'material_category_' . $value; ?>" style="display:none;">
+                                                <div class="image-selection-img">
+                                                    <img src="<?php echo $info['swatch_image']; ?>" alt="">
+                                                    <label class="checkbox-container">
+                                                        <input name="material_category[]" data-attribute="material_category"
+                                                               class="filter-selection" type="checkbox"
+                                                               value="<?php echo $value; ?>"/>
+                                                        <span class="checkmark"></span>
+                                                    </label>
+                                                </div>
+                                                <div class="image-selection-text"><?php echo $info['label']; ?></div>
+                                            </li>
+                                        <?php endforeach; ?>
+                                    </ul>
+                                    <div class="apply-filter-btns">
+                                        <div class="action-btn">
+                                            <!--a href="javascript: void(0)" class="border-btn sb-btn select-all-option">Select
+                                                All</a-->
+                                            <a href="javascript: void(0)" class="sb-btn brown-btn next-btn">Next</a>
+                                        </div>
+                                        <div class="skip-btn">
+                                            <a href="javascript: void(0)" id="skipStep">Skip This Step</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="steps-product" id="step6">
+                    <div class="row">
+                        <div class="col-md-8 col-12 feature-list-container">
+                            <div class="steps-title">
+                                <h5><span><span class="colored-step">6</span>/6</span>Are you looking for any specific
+                                    features?
+                                </h5>
+                            </div>
+                            <div class="feature-list">
+                                <ul class="list-reset selection-list">
+                                    <?php $featureList = $dataHelper->getFeatureOptions(); ?>
+                                    <?php foreach ($featureList as $value => $label): ?>
+                                        <li class="shopfeature-list <?php echo 'shopfeature_list_' . str_replace(':', '', $value) ?> <?php echo str_replace(':', '', $value); ?>">
+                                            <div class="image-selection-img">
+                                                <label class="checkbox-container">
+                                                    <input name="shopfeature[]" data-attribute="shopfeature"
+                                                           class="shopfeature-checkbox filter-selection" type="checkbox"
+                                                           value="<?php echo $value; ?>"/>
+                                                    <span class="checkmark"></span>
+                                                    <span class="checkbox-text"><?php echo $label; ?></span>
+                                                </label>
+                                            </div>
+                                            <div class="image-selection-text"><?php echo $label; ?></div>
+                                        </li>
+                                    <?php endforeach; ?>
+                                </ul>
+                            </div>
+                            <div class="apply-filter-btns">
+                                <div class="action-btn">
+                                    <!--a href="javascript: void(0)" class="border-btn sb-btn select-all-option">Select
+                                        All</a-->
+                                    <a href="javascript: void(0)" class="sb-btn brown-btn see-all">See all <span
+                                                class="products_count"></span></a>
+									<a href="javascript:window.location.href=window.location.href" class="sb-btn brown-btn reset-all">Reset filters <span
+                                                class="reset"></span></a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-12">
+                            <img src="<?php echo $this->getViewFileUrl('images/feature-step.jpg'); ?>"
+                                 class="measurement-window">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <input id="field_selector" value="" type="hidden">
+        <input id="field_productids" value="" type="hidden">
+        <input id="WD_field_productids" name="WD_field_productids" value="" type="hidden">
+		</form>
+		
+    </div>
+	<style>
+	.full-page-loader.product-finder-loader {
+  pointer-events: auto;
+}
+</style>
+    <script type="text/javascript">
+        require(['jquery'], function ($) {
+			// For product finder and validations
+                var min_width;
+                var max_width;
+                <?php $minwidth = \Magento\Framework\App\ObjectManager::getInstance()->get(\Magento\Framework\App\Config\ScopeConfigInterface::class)->getValue('catalog/productfinder/product_finder_min_width', \Magento\Store\Model\ScopeInterface::SCOPE_STORE);?>
+                <?php $maxwidth = \Magento\Framework\App\ObjectManager::getInstance()->get(\Magento\Framework\App\Config\ScopeConfigInterface::class)->getValue('catalog/productfinder/product_finder_max_width', \Magento\Store\Model\ScopeInterface::SCOPE_STORE);?>
+                <?php $mindrop = \Magento\Framework\App\ObjectManager::getInstance()->get(\Magento\Framework\App\Config\ScopeConfigInterface::class)->getValue('catalog/productfinder/product_finder_min_drop', \Magento\Store\Model\ScopeInterface::SCOPE_STORE);?>
+                <?php $maxdrop = \Magento\Framework\App\ObjectManager::getInstance()->get(\Magento\Framework\App\Config\ScopeConfigInterface::class)->getValue('catalog/productfinder/product_finder_max_drop', \Magento\Store\Model\ScopeInterface::SCOPE_STORE);?>
+                var min_width = <?php echo $minwidth ? $minwidth : 0 ?>;
+                var max_width = <?php echo $maxwidth ? $maxwidth : 99999999 ?>;
+                
+                var min_drop = <?php echo $mindrop ? $mindrop : 0 ?>;
+                var max_drop = <?php echo $maxdrop ? $maxdrop : 9999999?>;
+                var current_operation = false;
+                var previous_operation = false;
+                var noslidedown = false;
+                console.log(min_width, max_width, min_drop, max_drop);
+                //            var matrixArray = <?php //echo($matrixData)                     ?>//;
+
+                function getCurrentUnit() {
+                    return $("input[name=size]:checked").val();
+                }
+
+                function checkValidityInch() {
+                    var unitMaxWidth;
+                    var unitMinWidth;
+                    
+                    unitMaxWidth = (1 / 25.4) * max_width;
+                    unitMinWidth = (1 / 25.4) * min_width;
+                   
+                    var unitMaxDrop = (1 / 25.4) * max_drop;
+                    var unitMinDrop = (1 / 25.4) * min_drop;
+					console.log(unitMinWidth);
+					var MinWidth = unitMinWidth.toString().split(".");
+					if(MinWidth[1]!=''){
+						var unitMinWidth1 = MinWidth[1].slice(0, 2);
+						var unitMinWidth = MinWidth[0]+'.'+unitMinWidth1;
+					}
+					var MaxWidth = unitMaxWidth.toString().split(".");
+					if(MaxWidth[1]!=''){
+						var unitMaxWidth1 = MaxWidth[1].slice(0, 2);
+						var unitMaxWidth = MaxWidth[0]+'.'+unitMaxWidth1;
+					}
+					var MaxDrop = unitMaxDrop.toString().split(".");
+					if(MaxDrop[1]!=''){
+						var unitMaxDrop1 = MaxDrop[1].slice(0, 2);
+						var unitMaxDrop = MaxDrop[0]+'.'+unitMaxDrop1;
+					}
+					var MinDrop = unitMinDrop.toString().split(".");
+					if(MinDrop[1]!=''){
+						var unitMinDrop1 = MinDrop[1].slice(0, 2);
+						var unitMinDrop = MinDrop[0]+'.'+unitMinDrop1;
+					}
+					 
+                    return checkValidity(unitMaxWidth, unitMaxDrop, unitMinWidth, unitMinDrop)
+                }
+
+                function checkValidityCm() {
+                    // console.log('in-checkValidityCm');
+                    var unitMaxWidth;
+                    var unitMinWidth;
+                    
+                    unitMaxWidth = max_width / 10;
+                    unitMinWidth = min_width / 10;
+                    
+                    var unitMaxDrop = max_drop / 10;
+                    var unitMinDrop = min_drop / 10;
+                    return checkValidity(unitMaxWidth, unitMaxDrop, unitMinWidth, unitMinDrop)
+                }
+
+                function clearNumericInputs() {
+                    var fields = ['.drop', '.width'];
+                    fields.forEach(function (e) {
+                        if ($('' + e).length > 0) {
+                            let v = new Intl.NumberFormat('en-GB', {
+                                minimumFractionDigits: 0,
+                                maximumFractionDigits: 2,
+                                useGrouping: false
+                            }).format($('' + e).val());
+                            if (isNaN(v)) {
+                                v = '';
+                            }
+                            if (v <= 0) {
+                                v = '';
+                            }
+                            $('' + e).val(v);
+                        }
+                    });
+                }
+
+                function checkBlankInputs() {
+                    clearNumericInputs();
+                    var isBlank = false;
+                    if ($(".drop").val() == '') {
+                        isBlank = true;
+                        //$(".drop").next('.validation-message').text("<?php echo __('Width required'); ?>");
+                        $(".drop").next('.validation-message').text("<?php echo __('Size required'); ?>");
+                        $(".drop").next('.validation-message').show();
+                    }
+                    
+                    if ($(".width").val() == '') {
+                        isBlank = true;
+                        //$(".width").next('.validation-message').text("<?php echo __('Drop required'); ?>");
+                        $(".width").next('.validation-message').text("<?php echo __('Size required'); ?>");
+                        $(".width").next('.validation-message').show();
+                    }
+                    return isBlank;
+                }
+				$('.numbersOnly').keyup(function () {
+                        if (true || $('#inch').is(':checked') === true) {
+                            this.value = this.value.replace(',', '.').replace(/[^0-9\.]/g, '');
+                        } else {
+                            this.value = this.value.replace(/[^0-9]/g, '');
+                        }
+                    });
+                function checkValidity(unitMaxWidth, unitMaxDrop, unitMinWidth, unitMinDrop) {
+                    $(".drop").next('.validation-message').hide();                    
+                    $(".width").next('.validation-message').hide();
+                    if (checkBlankInputs()) {
+						console.log('blankinputs');
+						return false;
+					}
+                    var isValid = true;
+                    
+                    var currentDrop = $(".width").val();	
+                    if (Number.parseFloat(currentDrop) > Number.parseFloat(unitMaxWidth)) {
+						console.log('width issue');
+                        $(".width").next('.validation-message').text("<?php echo __('size above max limit'); ?>");
+                        $(".width").next('.validation-message').show();
+                        isValid = false;
+                    }
+                    if (Number.parseFloat(currentDrop) < Number.parseFloat(unitMinWidth)) {
+                        $(".width").next('.validation-message').text("<?php echo __('size below min limit'); ?>");
+                        $(".width").next('.validation-message').show();
+                        isValid = false;
+                    }
+                    var currentWidth = $(".drop").val();
+                    if (Number.parseFloat(currentWidth) > Number.parseFloat(unitMaxDrop)) {
+						console.log('drop issue');
+						console.log('unitMaxDrop-->' + Number.parseFloat(unitMaxDrop));
+						console.log('unitCurrentDrop-->' + Number.parseFloat(currentWidth));
+						
+                        $(".drop").next('.validation-message').text("<?php echo __('size above max limit'); ?>");
+                        $(".drop").next('.validation-message').show();
+                        isValid = false;
+                    }
+                    if (Number.parseFloat(currentWidth) < Number.parseFloat(unitMinDrop)) {
+                        $(".drop").next('.validation-message').text("<?php echo __('size below min limit'); ?>");
+                        $(".drop").next('.validation-message').show();
+                        isValid = false;
+                    }
+					console.log('currentDrop-->' + currentWidth);
+                    
+                    
+                    return isValid;
+                }
+
+                function isMeasurementValid() {
+                    var unit = getCurrentUnit();
+					
+                    switch (unit) {
+                        case 'cm':
+                            return checkValidityCm();
+                            break;
+                        case 'inch':
+                            return checkValidityInch();
+                            break;
+                        case 'mm':
+						//alert(min_width);
+                            return checkValidity(max_width, max_drop, min_width, min_drop);
+                            break;
+                        default:
+                            alert('select a unit first');
+                    }
+			
+                }
+			function hideValidationErrors() {
+                    $(".drop").next('.validation-message').hide();
+                    $(".width").next('.validation-message').hide();
+                }
+				$('.calculate-price-fields').each(function () {
+                        try {
+                            if ($(this).is('input')) {
+                                let elType = $(this).attr('type');
+                                if (elType == 'radio') {
+                                    $(this).click(function (){
+                                        $(".dimension-next-btn1").trigger('click');
+                                    });
+                                } else if (elType == 'text') {
+                                    $(this).change(function () {
+                                        if ($(this).val()) {
+                                            $(".dimension-next-btn1").trigger('click');
+                                        }
+                                    });
+                                }
+                            } else if ($(this).is('select')) {
+                                $(this).change(function () {
+                                    if ($(this).val()) {
+                                        $(".dimension-next-btn1").trigger('click');
+                                    }
+                                });
+                            }
+                        } catch (e) {
+                            console.log(e);
+                        }
+                    });
+            let updateDimensionFilter = function () {
+                let filterHtml = '';
+                let selectedWidth = $('#filter-width').val();
+                let selectedDrop = $('#filter-drop').val();
+                if (selectedWidth && selectedDrop) {
+                    filterHtml =
+                        '<li class="width-drop-filter-list" style="pointer-events:none;"><span class="find-filter-dot"></span>' +
+                        '<span class="find-filter-name">W ' + selectedWidth + ', D ' + selectedDrop +
+                        '<span class="close-find-filter"></span></span></li>';
+                    $('.width-drop-filter-list').remove();
+                    $('.find-filter-list').prepend(filterHtml);
+                }
+            };
+            $('.dimension-next-btn').on('click', function (e) {
+				$(".dimension-next-btn").prop("disabled", true);
+				hideValidationErrors();
+				if (isMeasurementValid()) {
+					hideValidationErrors();
+					updateDimensionFilter();
+					$(this).parents('.steps-product').next('.steps-product').css('display', 'block');
+					  $(this).parents('.steps-product').css('display', 'none');
+					  var nextBtnIndex = $(this).parents('.steps-product').index();
+					  $('.step-list li').eq(nextBtnIndex + 1).addClass('active');
+					  $('.step-list li.active').prevAll().removeClass('active').addClass('finish');
+					  $('.steps-product').each(function () {
+						if ($('#step1').css('display') === 'none') {
+						  $('.help-find-text').addClass('back-active');
+						} else {
+						  $('.help-find-text').removeClass('back-active');
+						}
+					  });
+					  $("html, body").animate({ scrollTop: 140 }, 100);
+					
+				} else {
+					e.preventDefault();					
+					$(".dimension-next-btn").prop("disabled", false);
+					return false;
+				}
+                //updateDimensionFilter();
+            });
+			$('.dimension-next-btn1').on('click', function (e) {
+				$(".dimension-next-btn").prop("disabled", true);
+				hideValidationErrors();
+				if (isMeasurementValid()) {
+					hideValidationErrors();
+					//updateDimensionFilter();
+				} else {
+					e.preventDefault();					
+					$(".dimension-next-btn").prop("disabled", false);
+					return false;
+				}
+                //updateDimensionFilter();
+            });
+
+            $('.select-all-option').on('click', function () {
+                if ($(this).parents().hasClass('image-selection')) {
+                    $(this).parents('.image-selection').find('.selection-list li').each(function () {
+                        if ($(this).is(':visible')) {
+                            let inputText = $(this).find('.checkbox-container input')
+                                .parents('.image-selection-img').next('.image-selection-text').text();
+                            let inputTextId = inputText.replace(/[^a-z0-9\s]/gi, '').replace(/[_\s]/g, '-').toLowerCase();
+                            $('.find-filter-list li .' + inputTextId).remove();
+                            $(this).find('.checkbox-container input').prop('checked', true);
+                            $(this).find('.checkbox-container input').trigger('change');
+                        }
+
+                    });
+                } else if ($(this).parents().hasClass('feature-list-container')) {
+                    $(this).parents('.feature-list-container').find('.feature-list .selection-list li').each(function () {
+                        if ($(this).is(':visible')) {
+                            $(this).find('.checkbox-container input').prop('checked', true);
+                            $(this).find('.checkbox-container input').trigger('change');
+                        }
+                    });
+                }
+                $(this).before('<a href="javascript: void(0)" class="border-btn sb-btn remove-all-option">Remove All</a>')
+                    .addClass('in-active');
+            });
+            $(document).on('click', '.remove-all-option', function () {
+                if ($(this).parents().hasClass('image-selection')) {
+                    $(this).parents('.image-selection').find('.selection-list li').each(function () {
+                        $(this).find('.checkbox-container input').prop('checked', false);
+                        $(this).find('.checkbox-container input').trigger('change');
+                    });
+                } else if ($(this).parents().hasClass('feature-list-container')) {
+                    $(this).parents('.feature-list-container').find('.feature-list .selection-list li').each(function () {
+                        $(this).find('.checkbox-container input').prop('checked', false);
+                        $(this).find('.checkbox-container input').trigger('change');
+                    });
+                }
+                $(this).parents('.action-btn').find('.select-all-option').removeClass('in-active');
+                $(this).remove();
+            });
+        });
+    </script>
+    <?php echo $block->getChildHtml('product.finder.product.list'); ?>
+</section>

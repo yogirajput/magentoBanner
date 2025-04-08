@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="Omnie_ProductFinder::view" action="productfinder/room" parent="Appnova_Faq::appnova" title="Manage Room Type" module="Omnie_ProductFinder" sortOrder="50" resource="Appnova_Faq::faq"/>
+        <add id="Omnie_ProductFinder::blind_view" action="productfinder/blind" parent="Appnova_Faq::appnova" title="Manage Blind Type" module="Omnie_ProductFinder" sortOrder="60" resource="Appnova_Faq::faq"/>
+        <add id="Omnie_ProductFinder::material_view" action="productfinder/material" parent="Appnova_Faq::appnova" title="Manage Material Category" module="Omnie_ProductFinder" sortOrder="70" resource="Appnova_Faq::faq"/>
+    </menu>
+</config>

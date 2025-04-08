@@ -1,0 +1,97 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <virtualType name="RoomCategoryFilterPool" type="Magento\Framework\View\Element\UiComponent\DataProvider\FilterPool">
+        <arguments>
+            <argument name="appliers" xsi:type="array">
+                <item name="regular" xsi:type="object">Magento\Framework\View\Element\UiComponent\DataProvider\RegularFilter</item>
+                <item name="fulltext" xsi:type="object">Magento\Framework\View\Element\UiComponent\DataProvider\FulltextFilter</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="RoomCategoryFilterPool" type="Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider">
+        <arguments>
+            <argument name="collection" xsi:type="object" shared="false">Yogesh\ProductFinder\Model\ResourceModel\RoomCategory\Collection</argument>
+            <argument name="filterPool" xsi:type="object" shared="false">RoomCategoryFilterPool</argument>
+        </arguments>
+    </virtualType>
+    <type name="Yogesh\ProductFinder\Model\ResourceModel\RoomCategory\Grid\Collection">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">omnie_room_category</argument>
+            <argument name="eventPrefix" xsi:type="string">room_category_grid_collection</argument>
+            <argument name="eventObject" xsi:type="string">room_category_collection</argument>
+            <argument name="resourceModel" xsi:type="string">Yogesh\ProductFinder\Model\ResourceModel\RoomCategory</argument>
+        </arguments>
+    </type>
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="room_category_listing_data_source" xsi:type="string">Yogesh\ProductFinder\Model\ResourceModel\RoomCategory\Grid\Collection</item>
+            </argument>
+        </arguments>
+    </type>
+
+
+    <virtualType name="BlindCategoryFilterPool" type="Magento\Framework\View\Element\UiComponent\DataProvider\FilterPool">
+        <arguments>
+            <argument name="appliers" xsi:type="array">
+                <item name="regular" xsi:type="object">Magento\Framework\View\Element\UiComponent\DataProvider\RegularFilter</item>
+                <item name="fulltext" xsi:type="object">Magento\Framework\View\Element\UiComponent\DataProvider\FulltextFilter</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="BlindCategoryFilterPool" type="Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider">
+        <arguments>
+            <argument name="collection" xsi:type="object" shared="false">Yogesh\ProductFinder\Model\ResourceModel\BlindCategory\Collection</argument>
+            <argument name="filterPool" xsi:type="object" shared="false">BlindCategoryFilterPool</argument>
+        </arguments>
+    </virtualType>
+    <type name="Yogesh\ProductFinder\Model\ResourceModel\BlindCategory\Grid\Collection">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">omnie_blind_category</argument>
+            <argument name="eventPrefix" xsi:type="string">blind_category_grid_collection</argument>
+            <argument name="eventObject" xsi:type="string">blind_category_collection</argument>
+            <argument name="resourceModel" xsi:type="string">Yogesh\ProductFinder\Model\ResourceModel\BlindCategory</argument>
+        </arguments>
+    </type>
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="blind_category_listing_data_source" xsi:type="string">Yogesh\ProductFinder\Model\ResourceModel\BlindCategory\Grid\Collection</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <virtualType name="MaterialCategoryFilterPool" type="Magento\Framework\View\Element\UiComponent\DataProvider\FilterPool">
+        <arguments>
+            <argument name="appliers" xsi:type="array">
+                <item name="regular" xsi:type="object">Magento\Framework\View\Element\UiComponent\DataProvider\RegularFilter</item>
+                <item name="fulltext" xsi:type="object">Magento\Framework\View\Element\UiComponent\DataProvider\FulltextFilter</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="MaterialCategoryFilterPool" type="Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider">
+        <arguments>
+            <argument name="collection" xsi:type="object" shared="false">Yogesh\ProductFinder\Model\ResourceModel\MaterialCategory\Collection</argument>
+            <argument name="filterPool" xsi:type="object" shared="false">MaterialCategoryFilterPool</argument>
+        </arguments>
+    </virtualType>
+    <type name="Yogesh\ProductFinder\Model\ResourceModel\MaterialCategory\Grid\Collection">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">omnie_material_category</argument>
+            <argument name="eventPrefix" xsi:type="string">material_category_grid_collection</argument>
+            <argument name="eventObject" xsi:type="string">material_category_collection</argument>
+            <argument name="resourceModel" xsi:type="string">Yogesh\ProductFinder\Model\ResourceModel\MaterialCategory</argument>
+        </arguments>
+    </type>
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="material_category_listing_data_source" xsi:type="string">Yogesh\ProductFinder\Model\ResourceModel\MaterialCategory\Grid\Collection</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Magento\CatalogSearch\Model\Indexer\Fulltext\Action\DataProvider">
+        <plugin name="stockedProductsFilterPlugin" disabled="true"/>
+        <plugin name="stockedProductFilterByInventoryStockPlugin" disabled="true"/>
+    </type>
+</config>

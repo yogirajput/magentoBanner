@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <section id="catalog" translate="label" sortOrder="130" showInDefault="1" showInWebsite="1" showInStore="1">
+            <group id="product_finder" translate="label" type="text" sortOrder="999" showInDefault="1" showInWebsite="0" showInStore="0">
+                <label>Product Finder</label>
+                <field id="route" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>URL Key</label>
+                </field>
+                <field id="category_id" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Category Id</label>
+                </field>
+				<field id="productfinder_heading" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Heading</label>
+                </field>
+            </group>
+			<group id="productfinder" translate="label" type="text" sortOrder="1010" showInDefault="1" showInWebsite="0"
+                   showInStore="0">
+                <label>Product Finder Min/Max Width</label>
+                <field id="product_finder_min_width" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="0"
+                       showInStore="0">
+                    <label>Product Finder Min Width</label>
+                </field>
+				<field id="product_finder_max_width" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="0"
+                       showInStore="0">
+                    <label>Product Finder Max Width</label>
+                </field>
+				<field id="product_finder_min_drop" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="0"
+                       showInStore="0">
+                    <label>Product Finder Min Drop</label>
+                </field>
+				<field id="product_finder_max_drop" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="0"
+                       showInStore="0">
+                    <label>Product Finder Max Drop</label>
+                </field>
+            </group>
+            <group id="category_use_in_filter" translate="label" type="text" sortOrder="1000" showInDefault="1" showInWebsite="0" showInStore="0">
+                <label>Categories Use In Filter</label>
+                <field id="categories" translate="label" type="multiselect" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Categories</label>
+                    <source_model>Yogesh\ProductFinder\Model\Source\Category</source_model>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>
