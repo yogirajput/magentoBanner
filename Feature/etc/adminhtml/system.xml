@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <section id="dotcom_category_settings" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+            <tab>dotcom_settings</tab>
+            <group id="feature" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="0"
+                   showInStore="0">
+                <label>Feature SEO Information</label>
+                <field id="feature_meta_title" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="0"
+                       showInStore="0">
+                    <label>Feature Meta Title</label>
+                </field>
+                <field id="feature_meta_description" translate="label" type="textarea" sortOrder="1" showInDefault="1" showInWebsite="0"
+                       showInStore="0">
+                    <label>Feature Meta Description</label>
+                </field>
+                <field id="feature_meta_keywords" translate="label" type="textarea" sortOrder="1" showInDefault="1" showInWebsite="0"
+                       showInStore="0">
+                    <label>Feature Meta Keywords</label>
+                </field>
+            </group>			
+            <group id="bankholiday" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="0"
+                   showInStore="0">
+                <label>US Bank Holiday List</label>
+                <field id="us_bank_holiday" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="0"
+                       showInStore="0">
+                    <label>Bank Holiday</label>
+                </field>
+            </group>
+			
+        </section>
+		
+    </system>
+</config>

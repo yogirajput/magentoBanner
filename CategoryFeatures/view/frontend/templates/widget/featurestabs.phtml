@@ -1,0 +1,53 @@
+<?php 
+$features = $this->getFeatures();
+?>
+<?php
+/*
+$features = array(
+    array('title' => 'T1', 'body' => '1asdsadsad asda'),
+    array('title' => 'T2', 'body' => '2asdsadsad asda'),
+    array('title' => 'T3', 'body' => '3asdsadsad asda'),
+);*/
+
+if ($features) :
+?>
+
+<?php
+$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+$product = $objectManager->get('Magento\Framework\Registry')->registry('current_product');//get current product
+$product_id = $product->getId();
+$productSKU = $product->getSku();
+$product = $objectManager->get('Magento\Catalog\Model\Product')->load($product_id);
+$product = $block->getProduct();
+$_customHelper = $this->helper('Yogesh\Customcatalog\Helper\Data');
+?>
+
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <div class="sb-tab-container">
+                <div class="sb-tab-header">
+                    <ul class="list-reset">
+                        <?php $i = 0; foreach ($features as $feature) : ?>
+                          <li class="<?php echo ($i==0)? 'active' : '';?>">
+                              <a href="javascript: void(0)"
+                                  data-id="<?php echo $i ?>"><?php echo strtolower($feature['title']); ?></a>
+                          </li>
+                        <?php $i++; endforeach;?>
+                    </ul>
+                </div>
+                <div class="sb-tab-body">
+                    <?php $j = 0; foreach ($features as $feature) : ?>
+                      <div class="sb-tab <?php echo ($j==0)? 'active' : '';?>" id="<?php echo $j ?>">
+                          <?php echo $feature['body']; ?>
+                      </div>
+                    <?php $j++; endforeach;?>
+                </div>
+            </div>
+			 
+        </div>
+    </div>
+</div>
+
+
+<?php endif; ?>

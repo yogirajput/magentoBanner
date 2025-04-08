@@ -1,0 +1,124 @@
+<!-- Yogesh insurance -->
+<?php if ($block->isBannerEnabled() && $block->showBanner()) :?>
+<?php
+$productData = $this->getProductData();
+$price = '';
+$desc = '';
+$hide = false;
+if ($productData) {
+	$price = $productData['price'];
+	$desc = $productData['details'];
+}
+$product = $this->getCurrentProduct();
+if ($product && $product->getAppnovaHideInsurance() == 1) {
+	$hide = true;
+}
+if (!$hide):
+?>
+<div class="f-fix appnova_insurance" id=" appnova_insurance_container">
+    <form action="<?php echo $block->getFormAction() ?>" method="post" id="appnova_insurance_form">
+<input type="hidden" name="product" value="<?= $productData['ID']?>" />
+        <label class="checkbox-container" for="insurance">
+            <input type="checkbox" id="appnova_insurance_checkbox" name="insurance" value="1" disabled="disabled" />
+            <span class="checkmark"></span>
+            <span class="checkbox-text">+ Add Right-Size Guarantee for only <?php echo $price ?></span>
+			<span id="appnova_insurance_error">Something wrong</span>
+        </label>
+
+        <!-- <input type="checkbox" id="appnova_insurance_checkbox" name="insurance" value="1" disabled="disabled" />
+        <label for="insurance">+ Add Right-Size Guarantee for only <?php echo $price ?></label>
+        <span id="appnova_insurance_error">Something wrong</span> -->
+
+        <!--div class="appnova_insurance_details"><a href="/rightsize-guarantee" target="new"><span>See More
+                    Details</span></a></div-->
+        <?php echo $block->getBlockHtml('formkey')?>
+    </form>
+</div>
+<script>
+require(['jquery', 'domReady!'], function($) {
+    $('#appnova_insurance_checkbox').removeAttr('disabled'); //Do not enable till DOM is ready
+    function showError(message) {
+        if (!message) {
+            message = 'Something wrong';
+        }
+        $('#appnova_insurance_error').addClass('appnova_show');
+    }
+
+    function hideError() {
+        $('#appnova_insurance_error').removeClass('appnova_show');
+    }
+    var appnova_send_insurance = true;
+    $('body').on('click', '#appnova_insurance_checkbox', function(e) {
+        //If checkbox is disabled, DO NOT ALLOW CHANGE
+        var checkbox = $(this);
+        console.log('checking for disabled', checkbox.prop('disabled'));
+        if (checkbox.length > 0 && checkbox.prop('disabled')) {
+            console.log('Cannot click a disabled checkbox');
+            e.stopPropagation();
+        }
+    });
+    $('body').on('change', '#appnova_insurance_checkbox', function(e) {
+        e.stopPropagation();
+        if (!appnova_send_insurance) {
+            console.log('change ignored');
+            appnova_send_insurance = true;
+            return;
+        }
+        console.log('changed');
+        var form = $(this).closest('form');
+        hideError();
+        var tobesent = form.serialize();
+        console.log('disabled');
+        $('#appnova_insurance_checkbox').attr('disabled', true);
+        $.ajax({
+            url: form.attr('action'),
+            type: "POST",
+            data: tobesent,
+            success: function(response) {
+                var reenable = true;
+                console.log(response);
+                try {
+                    //$('#form-validate').submit();	        	
+                    if (response.success) {
+                        //All ok, out of prudence set the checkbox to the session one
+                        appnova_send_insurance = false; //To not fire again this sender
+                        $('#appnova_insurance_checkbox').prop('checked', response.current);
+                        hideError();
+                    } else {
+                        //out of prudence set the checkbox to the session one
+                        appnova_send_insurance = false; //To not fire again this sender
+                        $('#appnova_insurance_checkbox').prop('checked', response.current);
+                        showError(response.message);
+                    }
+                } catch (err) {
+                    console.log(err);
+                    showError();
+                }
+                if (reenable) {
+                    //Re-enable
+                    console.log('re-enabled');
+                    appnova_send_insurance = true;
+                    //Nothing to do always
+                    $('#appnova_insurance_checkbox').removeAttr('disabled');
+                }
+            },
+            error: function(err) {
+                console.log(err);
+                showError(err);
+                //Out of paranoia
+                appnova_send_insurance = false;
+                $('#appnova_insurance_checkbox').prop('checked', false);
+                //Re-enable
+                console.log('re-enabled');
+                //Nothing to do always
+                $('#appnova_insurance_checkbox').removeAttr('disabled');
+                appnova_send_insurance = true;
+            }
+        });
+    });
+});
+</script>
+<?php endif; ?>
+
+<?php endif; ?>
+<!-- Yogesh insurance end -->

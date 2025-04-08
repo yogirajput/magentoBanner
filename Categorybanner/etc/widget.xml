@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ 
+<widgets xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../Magento/Widget/etc/widget.xsd">
+   <widget id="appnova_category_icons" class="Yogesh\Categorybanner\Block\Widget\CategoriesIcons">
+        <label translate="true">Select Home Page Categories (with icons)</label>
+        <description>Select catagories to show as links</description>
+        <parameters>
+            <parameter name="home_child_categories_icons" xsi:type="multiselect" visible="true" sort_order="0" source_model="Yogesh\Categorybanner\Block\Widget\Catlisting">
+                <label translate="true">Select Categories</label>
+            </parameter>
+        </parameters>
+    </widget>
+</widgets>

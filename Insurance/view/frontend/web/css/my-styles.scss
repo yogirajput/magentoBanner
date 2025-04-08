@@ -1,0 +1,37 @@
+.appnova_insurance{
+	float: left;
+	width: 100%;
+	display: block;
+	margin: 0px;
+	margin-top: 10px;
+	margin-bottom: 10px;	
+    border: solid 1px #009ca6;
+    padding: 5px;
+	&.appnova_insurance_cart{
+		margin-top: 0px;
+		margin-bottom: 20px;
+		background-color: #f8f8f8;
+    	border: solid 1px #cccccc;
+    	label {
+    		display: inline;
+    	}
+	}
+	#appnova_insurance_checkbox {
+		display: inline-block;
+    	width: auto;
+	}
+	#appnova_insurance_error {
+		color: #600000;
+		display: none;
+		&.appnova_show {
+			display: inline-block;
+		}		
+	}
+	#appnova_insurance_reload {
+		color: #009ca6;
+		display: none;
+		&.appnova_show {
+			display: inline-block;
+		}		
+	}
+}

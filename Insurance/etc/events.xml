@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+   <event name="controller_action_predispatch_checkout_cart_index">
+       <observer name="appnova_insurance_cart_index" instance="Yogesh\Insurance\Observer\CartIndexEvent" />
+   </event>
+   <event name="checkout_cart_product_add_after">
+   	   <observer name="appnova_insurance_cart_add" instance="Yogesh\Insurance\Observer\CartAddEvent" />
+   </event>
+   <event name="sales_quote_remove_item">
+      <observer name="appnova_insurance_cart_remove" instance="Yogesh\Insurance\Observer\CartRemoveEvent" />
+   </event>
+   <event name="checkout_cart_save_after">
+    <observer name="appnova_insurance_cart_save" instance="Yogesh\Insurance\Observer\CartSaveEvent" />
+   </event>
+   <event name="controller_action_predispatch_checkout_index_index">
+       <observer name="appnova_insurance_checkout_index" instance="Yogesh\Insurance\Observer\CartIndexEvent" />   	
+   </event>
+   <event name="checkout_quote_destroy">
+       <observer name="appnova_insurance_quote_destroy" instance="Yogesh\Insurance\Observer\CartDestroyEvent" />  
+   </event>
+</config>

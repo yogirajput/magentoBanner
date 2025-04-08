@@ -1,0 +1,395 @@
+<?php
+$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+$category = $objectManager->get('Magento\Framework\Registry')->registry('current_category');//get current category
+/** @var \Magento\Wishlist\Helper\Data $wishlistHelper */
+$wishlistHelper = $this->helper('Magento\Wishlist\Helper\Data');
+/** @var \Wyomind\ElasticsearchCore\Helper\Cart $cartHelper */
+$cartHelper = $this->helper('Wyomind\ElasticsearchCore\Helper\Cart');
+/** @var string $uenc */
+$uenc = $cartHelper->getUenc();
+/** @var boolean $wishlistAllow */
+$wishlistAllow = $wishlistHelper->isAllow();
+$priceHelper = $objectManager->create('Magento\Framework\Pricing\Helper\Data');
+if ($category) {
+    $subcats = $category->getChildrenCategories();
+	// print_r(gettype($subcats));
+    $_helper = $this->helper('Magento\Catalog\Helper\Output');
+	$labelsHelper = $this->helper('Yogesh\Labels\Helper\Data');
+    ?>
+	 <?php $customerGroupId = $block->getData('customerGroupId'); //ksort($subcats);?>
+	<div id = "subcat-div">
+	<?php	
+		 $subcat_array=array();
+		 foreach ($subcats as $subcat){
+		 	array_push($subcat_array, $subcat->getId());
+		 }
+		 foreach($subcat_array as $key => $tag_name){
+			 $cat_products = $objectManager->create('Magento\Catalog\Model\Category')->load($tag_name);
+			 $total_products = $cat_products->getProductCollection()->addAttributeToSelect('*');
+			 if(($total_products->count()) == 0) {
+				 array_splice($subcat_array,$key, 1);
+			 }
+		  }
+		$limit = 5; //max how many sub-categories to show in single page.
+		 
+		$offset = !empty($_GET['offset']) ? ($_GET['offset']): 0;
+		$total_categories = count($subcat_array); //total number of sub-categories.
+		$total_pages = (int)ceil( $total_categories/ $limit ); //total number of pages.
+		$queried_subcategories = array_slice($subcat_array,$offset,$limit);
+
+        foreach ($queried_subcategories as $subcat) { 
+			$_category = $objectManager->create('Magento\Catalog\Model\Category')->load($subcat);
+			$_outputhelper = $this->helper('Magento\Catalog\Helper\Output');
+			//$subcaturl = $subcat->getUrl();
+			$categoryProducts = $_category->getProductCollection()->setPageSize(6)->addAttributeToSelect('*');
+			
+			$defaultLabel = $labelsHelper->getDefaultLabel1();
+			//$_category->getImageUrl() && 
+			if (count($categoryProducts) > 0) {
+				?>
+				<div class="products wrapper grid products-grid marT20">
+					<?php
+					$current_page = !$offset ? 1 : ( $offset / $limit ) + 1;
+					?>
+					<ol class="products list product-items-list">
+						<li class="item product product-item product-item-category">
+							<div class="product-item-category-icon">
+							<a href="<?php echo $_category->getUrl();?>">
+								<img src="<?php echo $_category->getImageUrl(); ?>" alt="<?php echo $_category->getName();?>" class="no-lazy">
+							</a>
+							</div>
+							<div class="product-item-category-name"><a href="<?php echo $_category->getUrl();?>"><?php echo $_category->getName();?></a></div>
+						</li>
+						<?php						
+						foreach ($categoryProducts as $_product) { 
+						//echo "<pre>"; print_r($_product->getData());
+							$productUrl = $this->getBaseUrl().$_product->getUrlKey(); 
+						?><li class="item product product-item">
+								<div class="product-item-info product-landing-page" data-container="product-grid">
+									<div class="image-fabric-container">
+										<div class="gallery-images-wrappers">
+											<div class="gallery-images-containers">
+											<?php 
+												$product = $objectManager->create('Magento\Catalog\Model\Product')->load($_product->getId());    
+												$listBlock = $objectManager->get('\Magento\Catalog\Block\Product\ListProduct');								
+												$images = $product->getMediaGalleryImages();
+												$j=1;
+												foreach($images as $child){ 
+												if($j > 1) continue;
+											?>
+												<img class="product-image-photo no-lazy" id="" src="<?php echo $child->getUrl(); ?>" alt="">
+												<?php $j++; }?>
+												<div class="owl-carousel owl-theme product-slide">
+												<?php
+													foreach($images as $child){ ?>
+														<div class="item">
+															<a href="<?= /* @escapeNotVerified */ $productUrl; ?>"
+																class="product photo product-item-photo" tabindex="-1"><img src="<?php echo $child->getUrl(); ?>" width="432" height="454" loading="lazy"> </a>
+														</div>									
+													<?php } ?>											
+												</div>
+												<?php if ($product->getSampleAvailable()) { ?>
+										 <div class="actions-primary">
+											<form class="product_addtocart_form"
+                                                           data-role="tocart-form"
+                                              data-product-sku="<?= $escaper->escapeHtml($_product->getSku()) ?>"
+                                              action="<?= str_replace("productId", $_product->getId(), $cartHelper->getAddUrlPlaceHolder()); ?>"
+                                                           method="post">
+												<input type="hidden" name="product" value="<?= $_product->getId() ?>">
+												<input type="hidden" name="uenc" value="<?php echo $uenc; ?>">
+												<input type="hidden" name="productname"  value="<?= $_product->getName()?>" />
+												<input type="hidden" name="unit" value="cm"/>
+												<input type="hidden" name="operation" value="1"/>
+												<input type="hidden" name="qty" value="1"/>
+												<input type="hidden" name="Request" value="Free Sample"/>
+											   <input type="hidden" name="isAjax" value="1">
+												<?php echo $block->getBlockHtml('formkey') ?>
+												<div class="catalog_labels">
+												<?php if (!empty($_product->getEnableFirstStamp()) && $_product->getEnableFirstStamp()): ?>
+													<div class="catalog_label catalog_label_1"
+														 style="background-image: url('/pub/media/catalog/product/<?= $defaultLabel ?>');">
+												</div>
+												<?php endif; ?>
+												<?php if (!empty($_product->getEnableSecondStamp()) && $_product->getEnableSecondStamp() && !empty($_product->getSecondStamp()) && $_product->getSecondStamp()): ?>
+														<div class="catalog_label catalog_label_2 product-ribbion"
+															 style="background-image: url('/pub/media/catalog/product<?= $_product->getSecondStamp() ?>');">
+															 <span
+															style="color:<?php if (!empty($_product->getFreeSampleOverlayColor())) {
+																$attr = $_product->getResource()->getAttribute('free_sample_overlay_color');
+																 if ($attr->usesSource()) {
+																	  $getOptionText = $attr->getSource()->getOptionText($_product->getFreeSampleOverlayColor());
+																 }
+																echo strtolower($getOptionText);
+															} else {
+																echo 'black';
+															} ?>">
+														<?php echo __("Order Free Fabric Sample"); ?></span>
+														</div>
+													<?php endif; ?>
+												<button type="button" 
+														title="<?php if (!empty($_product->getQuantityAndStockStatusIds()) && $_product->getQuantityAndStockStatusIds() == 0) :
+															?>><?php echo __("The product is not available"); ?><?php
+														else : ?><?php echo __("Order Free Fabric Sample"); ?>
+															<?php endif; ?>"
+														class="eln-ajax-add-to-cart action tocart primary <?php if (!empty($_product->getQuantityAndStockStatusIds()) && $_product->getQuantityAndStockStatusIds() == 0) :
+															?>disabled<?php
+														endif; ?>">
+														<?php //$labelsHelper->echoLabels($_product); ?>
+												</button>
+											</div>
+											   
+											</form>
+										</div> 
+										<?php }?>
+											</div>
+										</div>
+										
+									</div>
+									<div class="product-tags">
+										<ul class="list-reset marquee tagMarquee">
+											<?php echo $this->getLayout()->createBlock('Yogesh\CategoryHsp\Block\Widget\PriceBlock')->setProductEntityId($_product->getId())->setTemplate('Appnova_CategoryHsp::widget/pricelistblock.phtml')->toHtml() ?>
+											<?php $deliverTime = ($_product->getDeliveryTime()) ? $_product->getDeliveryTime() : 0; ?>
+											<?php $packagingTime = ($_product->getPackagingTime()) ? $_product->getPackagingTime() : 0; ?>
+											<?php $manufactureTime = ($_product->getManufactureTime()) ? $_product->getManufactureTime() : 0; ?>
+											<?php $deliverFrom = ($_product->getDeliveryFrom()) ? $_product->getDeliveryFrom() : 0; ?>
+											<?php $totalDays = $deliverTime + $packagingTime + $manufactureTime; ?>
+											<?php if ($totalDays > 0) { ?>
+												<li><img src="<?php echo $this->getViewFileUrl('images/icons/van.svg'); ?>" alt="">
+												Delivered in
+												<?php
+												if (($deliverFrom > 0)) {
+													echo $deliverFrom . ' to ';
+												}
+												?>
+													<?php echo $totalDays ?>
+												working days.
+											</li>
+											<?php } ?>
+											<?php if (!empty($_product->getMultipleOverlay())):
+													$overlays = $_product->getMultipleOverlay();
+													$overlayArr = explode(PHP_EOL, $overlays ?? '');
+													foreach ($overlayArr as $overlay):
+														$overlay = explode('|', ($overlay) ?? '');
+														if (!empty($overlay[0])):
+															if (!empty($overlay[1])): $overlayimg = trim(strtolower($overlay[1]));
+															else: $overlayimg = ''; endif;
+															echo '<li class="overlay-">' . html_entity_decode($overlayimg) . ' ' . strip_tags($overlay[0]) . '</li>';
+														endif;
+													endforeach;
+												endif;
+												?>
+										</ul>
+									</div>
+									<div class="product details product-item-details eln-product-item-details" product-id="<?php echo $_product->getId();?>">
+										<div class="product-name-wishlist">
+											<strong class="product name product-item-name">
+												<a class="product-item-link"
+													href="<?php echo $productUrl;?>"><?php echo $_product->getName();?></a>
+											</strong>
+											<div data-role="add-to-links" class="actions-secondary">
+												<?php if ($wishlistAllow) : ?>
+												<form data-role="towishlist-form"
+													  action="javascript:void(0);<?php //echo $block->getUrl("wishlist/index/add") ?>"
+													  method="post" class="towishlist-form">
+												<input type="hidden" name="product" value="<?= $_product->getId() ?>">
+												<?php echo $block->getBlockHtml('formkey') ?>
+												<a onclick="addProductToWishlist(<?= $_product->getId() ?>)"
+												   title="<?php echo __("Add to Wish List"); ?>"
+												   class="eln-ajax-add-to-wishlist action towishlist wishlist">
+												</a>
+											</form>
+											<?php endif; ?>
+											</div>
+										</div>
+										<div class="price-box price-final_price">
+											<span class="price-container price-final_price tax weee">
+												<span class="price-wrapper">
+													<span class="regular-price">
+														<span class="price">From <?php echo $priceHelper->currency( $_product->getFinalPrice(), true, false);?> </span>
+													</span>
+												</span>
+											</span>
+										</div>
+									</div>
+								</div>
+							</li>
+							
+						<?php } ?>
+						<!--Space for Product Rows--->
+						
+						<li class="item product product-item product-item-category product-item-category-view-all">
+							<div class="product-item-category-action">
+								<a href="<?php echo $_category->getUrl();?>">View All <span><?php echo $_category->getName();?></span> <span class="action-arrow"></span></a>
+							</div>
+						</li>		
+					</ol>
+				</div>
+<?php 
+                }
+        } ?>
+<?php } ?>
+	</div>
+<?php if($total_pages > 1){?>
+	<div id="load-selector" class="col-md-12 text-center">
+		<button id="load-more" class="sb-btn brown-btn" >More Categories</button>
+	</div>
+<?php } ?>
+
+<script type="text/x-magento-init">
+{
+	"[data-role=tocart-form], .form.map.checkout": {
+		"catalogAddToCart": {}
+	}
+}
+</script>
+
+<script type="text/javascript">
+require(['jquery'], function($) {
+    $(document).ready(function() {
+        var freeB = $(".product-addfreesample-button2");        
+        var freeT = freeB.attr('title');       
+        freeB.attr('title', 'Please wait while page is loading...');
+        setTimeout(function() {            
+            freeB.attr('title', freeT)
+            freeB.attr('disabled', null);
+        }, 3000);
+
+		$('body').addClass('product-landing-page');
+    });
+});
+
+</script>
+<script type="text/javascript">
+function addProductToWishlist(productID) { 
+    require(["jquery"], function($){
+        $.ajax({
+            url: '<?php echo $this->getUrl('matrixprice/index/addtowishlist') ?>',
+            method: 'get',
+            data: { productId: productID},
+            dataType: 'json',
+            showLoader:true,
+            success: function(data){
+                var redirect = data.result.redirect;
+                if(redirect) {
+                    window.location.href = '<?php echo $this->getUrl('customer/account/login') ?>';
+                } else {
+                  // show successfully added message 
+                }
+            }
+        });
+    });
+}
+require(['jquery'], function($) {
+    $('body').ready(function() {
+        jQuery(document).on('submit',".product_addtocart_form", function(e) { 
+			var inputs = jQuery(this).find('input[name=Request]');
+            var productname = jQuery(this).find('input[name=productname]');
+            if (typeof inputs != 'undefined' && inputs && inputs.length > 0) {
+				var input = inputs.first();
+                if (input.attr('value') == 'Free Sample') {
+					jQuery('#isfreebie').text(' (free sample)');
+                    jQuery('#productnamecart').text(productname.attr('value'));
+					$('body').trigger('contentUpdated');
+                } else {
+					jQuery('#isfreebie').text('');
+                    jQuery('#productnamecart').text('');
+                }
+            } else {
+				jQuery('#isfreebie').text('');
+				jQuery('#productnamecart').text('');
+            }
+        });
+		$('body').on('click',".product-ribbion", function (e) { 
+			var sampleInput = '<input type="hidden" name="Request" value="Free Sample">';
+			jQuery(this).parents(".product_addtocart_form").append(sampleInput);	
+			jQuery(this).parents(".product_addtocart_form").submit();	
+			// alert("herererer");
+			// $('.popTrigger').trigger('click');
+		});
+
+		
+    });
+});
+</script>
+<script type="text/javascript">
+	require(['jquery'], function($) {
+		$(document).ready(function() {
+		var counter = 1;
+		var queries = "";
+		var noMoreProducts = false;
+		var loadingInProgress = false;
+		var url = window.location;
+
+		function loadCategories() { 
+			var offset =Number('<?php echo $limit; ?>');
+			if (noMoreProducts) return;
+			var total_page = '<?php echo $total_pages;?>';
+			var offset = offset*counter;
+			let queries = {
+				'offset' : offset,
+			};
+			if (!loadingInProgress) {
+				loadingInProgress = true;
+				$.get(url, queries, function(data) {
+					if(!data || (counter >= Number(total_page))) {
+						noMoreProducts = true;
+						$('#load-more').remove();
+					}
+					else {
+							var post = $("#subcat-div .products-grid", data);
+							$('#load-more').attr("disabled", true);
+							$('#subcat-div').append(post);
+							$('#load-more').attr("disabled", false);
+							$('#load-more').html('More Categories');
+							//$('body').trigger('contentUpdated');
+							$( "form[data-role='tocart-form']" ).catalogAddToCart(); 
+							//$('body').trigger('contentUpdated');
+							counter++;
+							if(counter >= (Number(total_page))){
+								noMoreProducts = true;
+								$('#load-more').remove();
+							}
+							if ($(".product-slide").length > 0) {
+								setTimeout(productSlide, 3000);
+
+								function productSlide() { 
+									var sync1 = $(".product-slide");
+									sync1
+										.on("initialize.owl.carousel", function () {
+											var imgWidth = $('.owl-item.active').width();
+											$('.owl-item img').css('height', imgWidth);
+										})
+										.on("initialized.owl.carousel", function () {
+											var imgWidth = $('.owl-item.active').width();
+											$('.owl-item img').css('height', imgWidth);
+										})
+										.on("resize.owl.carousel", function () {
+											var imgWidth = $('.owl-item.active').width();
+											$('.owl-item img').css('height', imgWidth);
+										})
+										.owlCarousel({
+											loop: true,
+											nav: true,
+											mouseDrag: true,
+											items: 1,
+											dots: false
+										});
+								}
+							}
+						}
+					loadingInProgress = false;
+				});
+			}
+
+			
+		}
+		$(document).on('click', '#load-more', function() {
+			// $("form[data-role='tocart-form").removeEventListener("submit");
+			noMoreProducts = false;
+			$('#load-more').html('Loading...').prop('disabled', true);
+			loadCategories();
+		});
+		
+	});
+	});
+</script>

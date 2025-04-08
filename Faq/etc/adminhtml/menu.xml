@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../../Magento/Backend/etc/menu.xsd">
+    <menu>
+      <add id="Yogesh_Faq::yogesh" title="Dotcom Setting" module="Yogesh_Faq" sortOrder="100" resource="Yogesh_Faq::faq"/>
+	  <add id="Yogesh_Faq::faq" title="Dotcom faq Setting" module="Yogesh_Faq" sortOrder="1" parent="Yogesh_Faq::yogesh" action="faq/faq" resource="Yogesh_Faq::faq"/>
+	  <add id="Appnova_Banner::banner" title="Banner Settings" module="Appnova_Banner" sortOrder="3" parent="Yogesh_Faq::yogesh" action="banner/banner" resource="Appnova_Banner::banner"/>
+	  <add id="Appnova_Feature::feature" title="Feature Settings" module="Appnova_Feature" sortOrder="3" parent="Yogesh_Faq::yogesh" action="feature/feature" resource="Appnova_Feature::feature"/>	
+	</menu>
+</config>

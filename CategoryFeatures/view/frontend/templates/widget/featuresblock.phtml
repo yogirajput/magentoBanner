@@ -1,0 +1,91 @@
+<?php
+$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+$product = $objectManager->get('Magento\Framework\Registry')->registry('current_product');//get current product
+$product_id = $product->getId();
+$productSKU = $product->getSku();
+$product = $objectManager->get('Magento\Catalog\Model\Product')->load($product_id);
+$product = $block->getProduct();
+$_customHelper = $this->helper('Yogesh\Customcatalog\Helper\Data');
+?>
+<div class="features_block f-fix">
+    <div class="features_block_content" id="category_features_block_content">
+        <?php $styleCode = $product->getStyleCode();
+					$productentityId = $product->getEntityId();
+				?>
+        <?php if (isset($styleCode) && $_customHelper->getProAlternateColors($styleCode, $product->getSku())): ?>
+        <div data-role="collapsible" class="features_block_item_title" data-id="available-color">
+            <div data-role="trigger">
+                <span>Available in Other Colours</span>
+            </div>
+        </div>
+        <div data-role="content" class="features_block_item_content" id="available-color">
+            <div class="more-content-title-con">
+                <span class="more-content-title">Available in Other Colours</span>
+                <span class="more-content-close"></span>
+            </div>
+            <div class="more-content-container">
+                <?php echo $this->getLayout()->createBlock('Yogesh\Override\Block\Availablecolors')->setProductEntityId($productentityId)->setKey($styleCode)->setTemplate('Magento_Catalog::product/view/availablecolorslisting.phtml')->toHtml() ?>
+            </div>
+        </div>
+        <?php endif; ?>
+        <?php if ($product->getData('description')):?>
+        <div data-role="collapsible" class="features_block_item_title" data-id="product-description">
+            <div data-role="trigger">
+                <span>Product Description</span>
+            </div>
+        </div>
+        <div data-role="content" class="features_block_item_content" id="product-description">
+            <div class="more-content-title-con">
+                <span class="more-content-title">Product Description</span>
+                <span class="more-content-close"></span>
+            </div>
+            <div class="more-content-container">
+                <?php
+                $product = $block->getProduct();
+                echo $product->getData('description');
+                ?>
+            </div>
+        </div>
+        <?php endif ;?>
+        <?php $features = $this->getFeatures();
+			if ($features) :?> 
+			<?php $i = 0; foreach ($features as $feature) : ?>
+				<div data-role="collapsible" class="features_block_item_title" data-id="<?php echo strtolower($feature['title']); ?>">
+					<div data-role="trigger">
+						<span><?php echo ($feature['title']); ?></span>
+					</div>
+				</div>
+				<div data-role="content" class="features_block_item_content" id="<?php echo strtolower($feature['title']); ?>">
+					<div class="more-content-title-con">
+						<span class="more-content-title"><?php echo ($feature['title']); ?></span>
+						<span class="more-content-close"></span>
+					</div>
+					<div class="more-content-container">
+						 <?php echo $feature['body']; ?>
+					</div>
+				</div>																									
+			<?php endforeach;?>	
+        <?php endif;?>
+    </div>
+    <script>
+        require([
+            'jquery',
+            'accordion'], function ($) {
+            var appnova_acc = $("#category_features_block_content").accordion({active: 99999});
+            $(document).ready(function(){
+                var appnova_latest_open = -1;
+                $('#category_features_block_content .features_block_item_title').on('click',function(e){
+                    var o = $(this);
+                    var id = o.attr('accordion-id');
+                    if (id == appnova_latest_open) { 
+                        $("#category_features_block_content").accordion('deactivate',id);
+                        appnova_latest_open = -1;
+                    } else {
+                        appnova_latest_open = id;
+                    }
+                });
+            });
+        });
+    </script>
+    <div id="overlay" class="overlay"></div>
+    <!--script type="text/javascript" src="https://api.feefo.com/api/javascript/dotcomblinds" async></script-->

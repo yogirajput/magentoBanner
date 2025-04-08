@@ -1,0 +1,32 @@
+<?php
+
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+$child_category = $this->getData('home_child_categories_icons');
+$categories = $this->getCategoryLinks($child_category);
+$i = 0;
+
+$html = '';
+if ($categories->getSize() > 0) {
+    $html .= '<section class="blinds-category-icons f-fix overflow-hidden"><div class="inner-wrapper left-right">
+    <div class="section-title">
+            <h3 class="title">Shop by Made to Measure</h3>
+        </div>
+					<ul class="table-layout">';
+    foreach ($categories as $category) {
+    	$custom_icon = $category->getAppnovaCategoryIcon();  
+    	$customIconStye = '';
+    	if ($custom_icon) {
+    		$custom_icon_path = $this->getImageMediaPath().'catalog/category/'.$custom_icon;
+    		$customIconStye = 'style="background-image:url('.$custom_icon_path.');"';
+    	}  	
+		$html .= '<li '.$customIconStye.'><a href="' . $category->getUrl() . '">'.$category->getName().'</a></li>';
+		$i++;
+    }
+    $html .= '</ul></div></section>';
+    echo $html;
+}
+?>

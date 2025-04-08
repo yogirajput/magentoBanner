@@ -1,0 +1,38 @@
+<?php
+$faqData = $block->getCollectionData();
+$tCount = count($faqData);
+$tCount1 = (int) $tCount / 2;
+$loop = 0;
+foreach ($faqData as $data) {
+    $loop++;
+    if ($loop > $tCount1) {
+	$secondRow[] = $data;
+    } else {
+	$firstRow[] = $data;
+    }
+}
+?>
+<div class="section-title">
+    <div class="small-wrapper-m">
+	<h1><?php echo __('Frequently Asked Questions'); ?>  </h1>
+    </div>
+</div>
+<section class="cms-page f-fix">
+    <div class="small-wrapper-m">
+	<div class="accordion f-fix shippment">
+	    <ul class="f-fix">
+		<?php foreach ($firstRow as $data): ?>
+    		<li>
+    		    <div class="accord-head">
+    			<h3><?php echo $data['title']; ?></h3>
+    		    </div>
+
+    		    <div class="accord-content">
+			    <?php echo $data['content']; ?>
+    		    </div>
+    		</li>
+		<?php endforeach; ?>
+	    </ul>
+	</div>
+    </div>
+</section>

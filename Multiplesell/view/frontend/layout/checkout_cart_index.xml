@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+		<referenceContainer name="cart.summary"> 
+			<block class="Yogesh\Multiplesell\Block\AdditionsFreeBanner" name="appnova_additionsfree_block" before="checkout.cart.summary.title" template="Appnova_Multiplesell::additionsfreebanner.phtml"/>
+			<block class="Yogesh\Multiplesell\Block\AdditionsBanner" name="appnova_additions_block" before="checkout.cart.summary.title" template="Appnova_Multiplesell::additionsbanner.phtml"/>
+		</referenceContainer>
+    </body>
+</page>

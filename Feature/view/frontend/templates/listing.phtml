@@ -1,0 +1,21 @@
+<?php
+$collections = $block->getCollectionData();
+$media = $block->getImageMediaPath();
+?>
+<section class="cms-page f-fix">
+    <div class="small-wrapper-m">
+	<div class="accordion features f-fix ">
+	    <ul>
+		<?php foreach ($collections as $collection) :
+		    ?>
+    		<li>
+    		    <div class="accord-head">
+    			<h3><span class="icon"><img src="<?php echo $media . $collection->getImage(); ?>" alt="<?php echo $block->getTitle($collection->getTitle()); ?>"></span><?php echo  $block->getTitle($collection->getTitle()); ?></h3>
+    		    </div>
+			    <?php echo $block->getFilterImg($collection->getContent()); ?>
+    		</li>    
+		<?php endforeach; ?>
+	    </ul>            
+	</div>               
+    </div>
+</section>

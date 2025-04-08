@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <css src="Appnova_Categorybanner::css/my-styles.css" />
+    </head>
+    <body>
+	<container name="popup.container">
+            <block class="Yogesh\Override\Block\Popup" name="custom.cart.popup" template="Appnova_Override::popup/cartlist.phtml"/>
+        </container>
+        <referenceContainer name="main.custom.wrapper">
+            <block class="Yogesh\Categorybanner\Block\Widget\CategorybannerSlider" name="categorybanner_home_menu_top_all" before="-"
+                   template="Appnova_Categorybanner::widget/categorybannerslider.phtml" />
+        </referenceContainer>
+		<referenceBlock name="categorybanner_home_menu_top_all" remove="true"/>
+		
+        <referenceContainer name="sidebar.additional">
+        </referenceContainer>
+        <referenceContainer name="page.bottom">
+        </referenceContainer>
+    </body>
+</page>

@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Acl/etc/acl.xsd">
+    <acl>
+        <resources>
+            <resource id="Magento_Backend::admin">
+                <resource id="Magento_Backend::content">
+                    <resource id="Appnova_Feature::feature_content" title="Feature" sortOrder="10" >
+                        <resource id="Appnova_Feature::feature" title="Feature Data" sortOrder="40">
+                            <resource id="Appnova_Feature::save" title="Save Feature Data" sortOrder="10" />
+                            <resource id="Appnova_Feature::feature_delete" title="Delete Feature Data" sortOrder="20" />
+                        </resource>
+                    </resource>
+                </resource>
+            </resource>
+        </resources>
+    </acl>
+</config>

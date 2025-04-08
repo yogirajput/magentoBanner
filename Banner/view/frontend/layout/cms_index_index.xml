@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<!--
+/**
+* Copyright 2016 aheadWorks. All rights reserved.
+* See LICENSE.txt for license details.
+*/
+-->
+
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <!-- <referenceContainer name="content">
+            <block class="Yogesh\Banner\Block\Widget\BannerSlider" name="banner_home_menu_top" before="-"
+                   template="Yogesh_Banner::widget/bannerslider.phtml" />
+        </referenceContainer> -->
+        <referenceContainer name="content">
+        </referenceContainer>
+        <referenceContainer name="sidebar.additional">
+        </referenceContainer>
+        <referenceContainer name="page.bottom">
+        </referenceContainer>
+    </body>
+</page>

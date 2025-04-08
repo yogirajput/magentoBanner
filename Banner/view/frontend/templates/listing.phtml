@@ -1,0 +1,22 @@
+<?php
+$data = $block->getCollectionData();
+$media = $this->getImageMediaPath();
+?>
+<section id="banner" class="product-banner" data-type="parallax" data-speed="4">
+    <div class="slider">
+	<?php foreach ($data as $val): ?>
+    	<div class="item">
+    	    <div class="banner-container">
+    		<figure><img src="<?php echo $media . $val->getImage(); ?>" alt="<?php echo strip_tags($val->getTitle()); ?>" title="<?php echo strip_tags($val->getTitle()); ?>"/></figure>
+    		<div class="banner-content">
+    		    <div class="wrapper">
+    			<h2><?php echo $val->getTitle(); ?></h2>
+    			<div class="bannerBrief"><?php echo $val->getSubTitle(); ?>. </div>
+    			<a href="<?php echo $val->getLink(); ?>" target="<?php echo $val->getTarget(); ?>" class="btn"><?php echo __('Discover'); ?></a>
+    		    </div>
+    		</div>
+    	    </div>
+    	</div>
+	<?php endforeach; ?>
+    </div>
+</section>

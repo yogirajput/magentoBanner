@@ -1,0 +1,71 @@
+<?php
+$bannerImages = $this->getCategorybanners();
+$items = count($bannerImages);
+if ($items>0 && !$this->isCategorybannersenable()) {
+
+    $media = $this->getImageMediaPath();
+    $color = $this->getCategorybannersColor();
+    if ($color) {
+        $color = 'background-color: '.$color.';';
+    }
+    ?>
+    <style>
+    .category-banner,
+    .category-banner:before {
+        <?= $color; ?>
+    }
+    .blog-post-view #custom_wrapper {
+       padding-top: 0px;
+    }
+    .blog-post-view .category-banner {
+       margin-bottom: 45px;
+    }
+    </style>
+    
+		<?php 
+		foreach ($bannerImages as $image): ?>
+			<div class="multi-overlay">
+				<div class="multiOverlay-backdrop"></div>
+				<span class="close-multiOverlay">Close</span>
+				<div class="multiOver-content md">
+				 <?php if ($image['l']) : ?>
+						<a href="<?= $image['l']?>" class="category-banner-link">
+					<?php endif; ?>
+					<?php if ($image['i']) : ?>
+						<img src="<?= $media.$image['i'] ?>" alt='' />
+					<?php endif; ?>
+					<?php if ($image['t']) : ?>
+						<div class="category-banner-text"><?= $image['t'] ?></div>
+					<?php endif; ?>
+					<?php if ($image['l']) : ?>
+						</a>
+					<?php endif; ?>
+				</div>
+			</div>                
+		<?php endforeach;?>
+   
+    <?php if ($items>1) : ?>
+        
+    <?php endif; ?>
+<?php
+}
+?>
+<?php
+$productbannerImages = $this->getProductbanners();
+$productbanner = count($productbannerImages);
+if ($productbanner > 0 && !$this->isproductbannersenable()) {
+?>
+<div class="multi-overlay">
+    <div class="multiOverlay-backdrop"></div>
+		<span class="close-multiOverlay">Close</span>
+		<div class="multiOver-content md">
+		  <?php 
+		   foreach ($productbannerImages as $productbannerImage): ?>
+				<?= $productbannerImage['i']?>
+		<?php endforeach;?>
+		</div>
+	</div>
+	
+<?php 
+}
+?>

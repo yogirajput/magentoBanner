@@ -1,0 +1,72 @@
+<?php
+$bannerImages = $this->getBannerImages();
+$media = $this->getImageMediaPath();
+$width = $this->getSliderwidth();
+$i = 0;
+
+$ua = strtolower($_SERVER["HTTP_USER_AGENT"]);
+$isMob = is_numeric(strpos($ua, "mobile"));
+$isTab = is_numeric(strpos($ua, "tablet"));
+$isDesk = !$isMob && !$isTab;
+if($isDesk){
+?>
+<section class="home-main-slider section-gap text-center">
+      <div class="container">
+        <div class="row">
+          <div class="col-12 p-0">
+            <div class="hero-wrapper">
+              <div class="hero-container">
+			  <?php foreach ($bannerImages as $image): ?>
+			   <?php if (empty($image->getImage())) { ?>
+                <div class="hero-slide glod-arrow <?php if($i==0){echo 'active';}?>">
+                  <div class="slider-content">                    
+                      <?php echo $image->getcontent(); ?>
+                  </div>
+                </div>
+				<?php } else { ?>
+                <div class="hero-slide <?php if($i==0){echo 'active';}?>">
+                  <img src="<?php echo $media .  $image->getImage(); ?>" class="hero-img desktop no-lazy" alt="<?php echo strip_tags($image->getTitle()); ?>"/>                 
+                  <div class="label">
+                    <div class="main"><?php echo $image->getcontent(); ?></div>
+                    <?php if(!empty($image->getLink())):?><a href="<?php echo $image->getLink() ?>" class="sb-btn brown-btn"><?php echo $image->getBtnTitle(); ?></a><?php endif;?>
+                  </div>
+                </div>
+				<?php } ?>
+				  <?php $i++; endforeach; ?>
+              </div>
+              <div class="hero-nav">
+                <button class="hero-nav-prev">Prev</button>
+                <button class="hero-nav-next">Next</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+</section>
+<?php } else {?>
+<div class="home-mobile-slider">
+	<div class="home-mobile-slide owl-carousel owl-theme">
+	<?php foreach ($bannerImages as $image): ?>
+		<div class="item">
+			<img src="<?php echo $media . $image->getImagemobile(); ?>" alt="<?php echo strip_tags($image->getTitle()); ?>" class="no-lazy">
+			<div class="label">
+				<div class="main"><?php echo $image->getcontent(); ?></div>
+				<?php if(!empty($image->getLink())):?><a href="<?php echo $image->getLink() ?>" class="sb-btn brown-btn"><?php echo $image->getBtnTitle(); ?></a><?php endif;?>
+			</div>
+		</div>
+		<?php endforeach; ?>
+	</div>
+</div>
+<?php } ?>	
+<div class="scroll-down-container text-center mobile">
+  <a href="javascript: void(0)" class="scroll-down">Scroll Down
+	<span><img src="<?php echo $media; ?>static/icons/down-arrow-black.svg" alt="" /></span></a>
+</div>
+
+<style>
+	.hero-container .hero-slide .label .main p{font-size: 40px;
+	line-height: 50px;
+	font-weight: 700;
+	color: var(--sb-secondryColor);
+}}
+</style>

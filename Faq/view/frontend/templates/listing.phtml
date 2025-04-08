@@ -1,0 +1,51 @@
+<?php
+$faqData = $block->getCollectionData();
+$tCount = count($faqData);
+$tCount1 = (int) $tCount / 2;
+$loop = 0;
+foreach ($faqData as $data) {
+    $loop++;
+    if ($loop > $tCount1) {
+	$secondRow[] = $data;
+    } else {
+	$firstRow[] = $data;
+    }
+}
+?>
+	<section class="inside-page">
+		  <section class="page-content">
+			<div class="container">
+			  <div class="row">
+				<div class="col-12">
+				  <h1 class="h3 text-center page-title">Questions? Look here.</h1>
+				</div>
+			  </div>
+			</div>
+		  </section>
+	<section class="privacy-policy">
+        <div class="container">
+          <div class="row">
+            <div class="col-12">
+              <div class="sb-accordion-container">
+                <div class="accordion" id="accordion">
+				<?php $i=0; foreach ($faqData as $data): ?>
+						<div class="accordion-item">
+							<h2 class="accordion-header <?php echo ($i==0)?  'active': '';?>">
+							  <button class="accordion-button" type="button" data-id="collapse<?php echo $i;?>">
+							   <?php echo $data['title']; ?>
+							  </button>
+							</h2>
+							<div id="collapse<?php echo $i;?>" class="accordion-collapse" style="display: <?php echo ($i==0)?  'block;': 'none';?>">
+							  <div class="accordion-body">
+							   <?php echo $data['content']; ?>
+							  </div>
+							</div>
+						  </div>    		
+				<?php $i++; endforeach; ?>
+				</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+</section>

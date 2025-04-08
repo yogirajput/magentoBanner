@@ -1,0 +1,75 @@
+<?php
+$bannerImages = $this->getCategorybanners();
+$items = count($bannerImages);
+if ($items>0) {
+
+    $media = $this->getImageMediaPath();
+    $color = $this->getCategorybannersColor();
+    if ($color) {
+        $color = 'background-color: '.$color.';';
+    }
+    ?>
+    <style>
+    .category-banner,
+    .category-banner:before {
+        <?= $color; ?>
+    }
+    .blog-post-view #custom_wrapper {
+       padding-top: 0px;
+    }
+    .blog-post-view .category-banner {
+       margin-bottom: 45px;
+    }
+    </style>
+    <section class="category-banner category-banner-desktop f-fix" >
+        <ul class="">
+            <?php 
+            foreach ($bannerImages as $image): ?>
+                <li class="category-banner-item <?= 'items-'.$items; ?>">
+                    <div class="aligner">
+                    <?php if ($image['l']) : ?>
+                        <a href="<?= $image['l']?>" class="category-banner-link">
+                    <?php endif; ?>
+                    <?php if ($image['i']) : ?>
+                        <img src="<?= $media.'catalog/category/'.$image['i'] ?>" alt='' class="category-banner-ico" />
+                    <?php endif; ?>
+                    <?php if ($image['t']) : ?>
+                        <div class="category-banner-text"><?= $image['t'] ?></div>
+                    <?php endif; ?>
+                    <?php if ($image['l']) : ?>
+                        </a>
+                    <?php endif; ?>
+                    </div>
+                </li>
+            <?php endforeach;?>
+        </ul>
+    </section>    
+    <section class="category-banner category-banner-mobile f-fix" >
+        <ul class="">
+            <?php 
+            foreach ($bannerImages as $image): ?>
+                <li class="category-banner-item <?= 'items-'.$items; ?>">
+                    <div class="aligner">
+                    <?php if ($image['l']) : ?>
+                        <a href="<?= $image['l']?>" class="category-banner-link">
+                    <?php endif; ?>
+                    <?php if ($image['i']) : ?>
+                        <img src="<?= $media.'catalog/category/'.$image['i'] ?>" alt='' class="category-banner-ico" />
+                    <?php endif; ?>
+                    <?php if ($image['t']) : ?>
+                        <div class="category-banner-text"><?= $image['t'] ?></div>
+                    <?php endif; ?>
+                    <?php if ($image['l']) : ?>
+                        </a>
+                    <?php endif; ?>
+                    </div>
+                </li>
+            <?php endforeach;?>
+        </ul>
+    </section>
+    <?php if ($items>1) : ?>
+        
+    <?php endif; ?>
+<?php
+}
+?>

@@ -1,0 +1,69 @@
+.appnova_insurance {
+  float: left;
+  width: 100%;
+  background-color: var(--sb-lightGray);
+  border-radius: 8px;
+  padding: var(--sb-xxs) var(--sb-xxxs);
+  margin-top: var(--sb-md);
+  margin-bottom: var(--sb-md);
+  display: flex;
+  justify-content: space-between;
+}
+
+.appnova_insurance label {
+  font-size: 14px;
+  font-weight: 600;
+  margin: 0;
+  line-height: 14px;
+  padding-right: 10px;
+  margin-right: auto;
+}
+
+form#appnova_insurance_form {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.appnova_insurance_details {
+  color: var(--sb-actionColor);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.appnova_insurance.appnova_insurance_cart {
+  margin-top: 0px;
+  margin-bottom: 20px;
+  background-color: #f8f8f8;
+  border: solid 1px #cccccc;
+}
+
+.appnova_insurance #appnova_insurance_checkbox {
+  display: inline-block;
+  margin-top: 0;
+  position: absolute;
+  left: 0;
+  top: 4px;
+  width: 16px;
+  height: 16px;
+  z-index: 10;
+}
+
+.appnova_insurance #appnova_insurance_error {
+  color: #600000;
+  display: none;
+}
+
+.appnova_insurance #appnova_insurance_error.appnova_show {
+  display: inline-block;
+}
+
+.appnova_insurance #appnova_insurance_reload {
+  color: #009ca6;
+  display: none;
+}
+
+.appnova_insurance #appnova_insurance_reload.appnova_show {
+  display: inline-block;
+}

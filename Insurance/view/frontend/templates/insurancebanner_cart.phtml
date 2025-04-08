@@ -1,0 +1,172 @@
+<!-- Yogesh insurance cart-->
+<?php if ($block->isBannerEnabled() && $block->showBannerCart()) :?>
+<?php
+$productData = $this->getProductData();
+$price = '';
+$desc = '';
+//var_dump($productData);
+if ($productData) {
+	$price = $productData['price'];
+	$desc = $productData['details'];
+}
+$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+$listBlock = $objectManager->get('\Magento\Catalog\Block\Product\ListProduct');	
+$product = $objectManager->create('Magento\Catalog\Model\Product')->load($productData['ID']);    
+$postParams = $listBlock->getAddToCartPostParams($product);	
+//var_dump($postParams );
+//$escaper->escapeUrl($postParams['action'])
+//$block->getFormAction()
+?>
+<div class="f-fix appnova_insurance appnova_insurance_cart" id="appnova_insurance_container">
+	<form action="<?php echo $block->getFormAction() ?>" method="post" id="appnova_insurance_form">
+	<input type="hidden" name="product" value="<?= $productData['ID']?>" />
+		<input type="checkbox" id="appnova_insurance_checkbox" name="insurance" value="1" disabled="disabled"/> 
+		<span id="appnova_insurance_reload">Please wait - reloading basket</span> <label for="insurance"  style="display:inline">+ Add Right-Size Guarantee for only <?php echo $price ?></label> 
+		<span id="appnova_insurance_error">Something wrong</span>
+		<div class="appnova_insurance_details"><?php echo $desc ?></div>
+		<?php echo $block->getBlockHtml('formkey')?>
+	</form>
+</div><script>
+ 	require(['jquery','domReady!'], function($){ 
+ 		$('#appnova_insurance_checkbox').removeAttr('disabled'); //Do not enable till DOM is ready
+ 		function showError(message) {
+ 			if (!message) {
+ 				message = 'Something wrong';
+ 			}
+ 			$('#appnova_insurance_error').addClass('appnova_show');
+ 		}
+ 		function hideError() {
+ 			$('#appnova_insurance_error').removeClass('appnova_show');
+ 		}
+ 		var appnova_send_insurance = true;
+ 		$('body').on('click', '#appnova_insurance_checkbox', function(e) {
+ 			//If checkbox is disabled, DO NOT ALLOW CHANGE
+ 			var checkbox = $(this);
+ 			console.log('checking for disabled',checkbox.prop('disabled'));
+ 			if (checkbox.length>0 && checkbox.prop('disabled')) {
+ 				console.log('Cannot click a disabled checkbox');
+				e.stopPropagation();
+ 			}
+ 		});
+		$('body').on('change', '#appnova_insurance_checkbox', function(e) {	
+			e.stopPropagation();		
+			if (!appnova_send_insurance) {
+				console.log('change ignored');
+				appnova_send_insurance = true;
+				return;
+			}
+			console.log('changed');
+			var form = $(this).closest('form');
+			hideError();
+			var tobesent = form.serialize();
+			console.log('disabled');
+			$('#appnova_insurance_checkbox').attr('disabled',true);
+			$.ajax({
+			    url: form.attr('action'),
+			    type: "POST",
+			    data: tobesent,
+			    success: function(response){
+			    	var reenable = true;		
+			        console.log(response);	
+			        try {    	
+			        	if (response.success) {	    
+			        		//All ok, out of prudence set the checkbox to the session one
+			        		appnova_send_insurance = false; //To not fire again this sender
+			        		$('#appnova_insurance_checkbox').prop('checked', response.current);
+			        		hideError();
+			        		//Do nothing, wait for the form to reload
+			        		reenable = false;
+			        		$('#appnova_insurance_reload').addClass('appnova_show');
+			        		$('#form-validate').submit();	
+			        	} else {
+			        		//out of prudence set the checkbox to the session one
+			        		appnova_send_insurance = false; //To not fire again this sender
+			        		$('#appnova_insurance_checkbox').prop('checked', response.current);
+			        		showError(response.message);			        		
+			        	}
+			        } catch(err) {			        	
+			        	console.log(err);
+			        	showError();
+			        }
+			        if (reenable) {
+			    		//Re-enable
+						console.log('re-enabled');
+						appnova_send_insurance = true;
+			    		//Nothing to do always
+			    		$('#appnova_insurance_checkbox').removeAttr('disabled');
+			    	}
+			    },
+			    error: function(err) {
+			    	console.log(err);
+			    	showError(err);
+			    	//Out of paranoia
+			    	appnova_send_insurance = false;
+			    	$('#appnova_insurance_checkbox').prop('checked',false);
+			    	//Re-enable
+					console.log('re-enabled');
+			    	//Nothing to do always
+			    	$('#appnova_insurance_checkbox').removeAttr('disabled');
+			    	appnova_send_insurance = true;
+			    }
+			});		
+		});
+	});
+</script>
+<style>
+    .appnova_insurance_cart .product-items li {
+        margin-top: 10px;
+        margin-bottom: 10px;
+        background-color: #f8f8f8;
+        border: solid 1px #cccccc;
+        width: 100%;
+        padding: 5px !important;
+    }
+    .appnova_insurance_cart .product-items li label {
+        display: inline;
+    }
+    .appnova_insurance_cart .product-items li input[type="checkbox"]{
+        display: inline-block;
+        width: auto;
+        margin-right: 5px;
+    }
+    .appnova_insurance_cart .product-items .product-image-container {
+        min-width: auto;
+        width: 90px !important;
+    }
+    .appnova_insurance_cart .product-items .product-item-info,
+    .appnova_insurance_cart .product-items .product-image-photo {
+        min-width: auto;
+        width: auto;
+        float: left;
+    }
+    .appnova_insurance_cart .product-items .product-item-info {
+        margin-right: 10px;
+    }
+    .appnova_insurance_cart .product-items .product-item-info-text .product-description-details {
+        width: 100%;
+        clear: both;
+    }
+    .appnova_insurance_cart .product-items .product-item-info-text .product-description-details a {
+        color: #009ca6; 
+        padding-left: 5px; 
+        font-size: 12px;
+        font-weight: normal;
+    }
+    .wait-reload {
+        display: none;
+        color: #009ca6; 
+    }
+    .appnova_insurance_cart .product-items li form.waiting label .wait-clic{
+        display: none;
+    }
+    .appnova_insurance_cart .product-items li form.waiting label .wait-reload{
+        display: inline;
+    }
+    .appnova_insurance_cart .product-item .inner:hover .product-image-photo {
+        -webkit-transform: translateZ(0) scale(1);
+        -moz-transform: translateZ(0) scale(1);
+        transform: translateZ(0) scale(1);
+    }
+</style>
+<?php endif; ?>
+<!-- Yogesh insurance end -->			        	

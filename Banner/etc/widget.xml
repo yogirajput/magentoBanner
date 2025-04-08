@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<widgets xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../Magento/Widget/etc/widget.xsd">
+	<widget id="appnova_bannerslider" class="Yogesh\Banner\Block\Widget\BannerSlider">
+		<label translate="true">Banner Slider</label>
+		<description>Insert Banner Slider by Group</description>
+		<parameters>
+			<parameter name="sliderwidth" xsi:type="text"  visible="true" sort_order="2">
+				<label translate="true">Slider Width</label>						
+			</parameter>
+		</parameters>
+	</widget>
+	
+	<widget id="appnova_help" class="Yogesh\Banner\Block\Widget\Help">
+		<label>Help Section</label>
+		<description>Help Section</description>
+		<parameters>
+			<parameter name="title"  visible="true" xsi:type="text">
+				<label>Title</label>
+			</parameter>
+			<parameter name="subtitle"  visible="true" xsi:type="text">
+				<label>Subtitle</label>
+			</parameter>
+			<parameter name="paragraph"  visible="true" xsi:type="text">
+				<label>Paragraph</label>
+			</parameter>
+			<parameter name="ctatitle1"  visible="true" xsi:type="text">
+				<label>Cta_Title1</label>
+			</parameter>
+			<parameter name="ctalink1"  visible="true" xsi:type="text">
+				<label>Cta_link1</label>
+			</parameter>
+			<parameter name="ctatitle2"  visible="true" xsi:type="text">
+				<label>cta_title2</label>
+			</parameter>
+			<parameter name="ctalink2"  visible="true" xsi:type="text">
+				<label>cta_link2</label>
+			</parameter>
+		</parameters>
+	</widget>
+</widgets>

@@ -1,0 +1,39 @@
+<?php
+$bannerImages = $this->getBannerImages();
+$media = $this->getImageMediaPath();
+$width = $this->getSliderwidth();
+$i = 1;
+?>
+<section class="home-banner f-fix">
+    <ul class="f-fix">
+        <?php foreach ($bannerImages as $image): ?>
+            <li class="f-fix">
+                <figure class="f-fix bannercustom-<?php echo $image->getBannerId(); ?>">
+                    <div class="img-box f-fix bg-cover" style="background-image:url(<?php echo $media . $image->getImage(); ?>);">
+                        <img src="<?php echo $media . $image->getImage(); ?>" alt="<?php echo strip_tags($image->getTitle()); ?>"/>
+                    </div>
+                    <figcaption>
+                        <div class="small-wrapper-s">
+                            <?php
+                            if ($i == 0) {
+                                ?>
+                                <h1><?php echo $image->getTitle(); ?>
+                                    <small><?php echo $image->getcontent(); ?></small>
+                                </h1>
+                                <?php
+                            } else {
+                                ?>
+                                <h2><?php echo $image->getTitle(); ?>
+                                    <small><?php echo $image->getcontent(); ?></small>
+                                </h2>
+                                <?php
+                            }
+                            ?>
+                            <a href="<?php echo $image->getLink() ?>" class="shop btn delay"><span><?php echo $image->getBtnTitle(); ?></span></a>
+                        </div>
+                    </figcaption>
+                </figure>
+            </li>
+        <?php endforeach; ?>
+    </ul>
+</section>

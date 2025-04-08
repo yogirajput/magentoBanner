@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <section id="dotcom_category_settings" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+            <tab>dotcom_settings</tab>
+	        <group id="crosssell_settings" translate="label" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="0">
+	            <label>Cross-sell settings</label>
+	            <field id="products_sku" type="textarea" translate="label comment" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
+	                <label>Products SKU</label>
+	                <comment>List, one per row, the skus of the products to be added in cart blocks. It will work only with products that have been added to the Multiple cross-sell products field - Please use only SIMPLE PRODUCTS</comment>
+	            </field>
+	            <field id="all_or_nothing_products_sku" type="textarea" translate="label comment" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+	                <label>All or nothing Products SKU</label>
+	                <comment>List, one per row, the skus of the products to be added in cart blocks. It will work only with products that have been added to the Multiple cross-sell products field in ALL valid products (not in the above field, not in this field, not free) in the cart - Please use only SIMPLE PRODUCTS</comment>
+	            </field>
+	            <field id="free_only_products_sku" type="textarea" translate="label comment" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+	                <label>Free only additional Products SKU</label>
+	                <comment>List, one per row, the skus of the products to be added in cart blocks. They will be added ONLY if ALL the products in the cart are FREE SAMPLES - Please use only SIMPLE PRODUCTS</comment>
+	            </field>
+	        </group>
+        </section>
+    </system>
+</config>

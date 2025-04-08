@@ -1,0 +1,153 @@
+<!-- Yogesh freebanner cart-->
+<?php
+$items = $this->getProducts();
+if ($items && count($items)>0) :
+
+$_customHelper = $this->helper('Yogesh\Customcatalog\Helper\Data');
+$labelsHelper = $this->helper('Yogesh\Labels\Helper\Data');   
+$_catalogHelper = $this->helper('Magento\Catalog\Helper\Output');
+$_cartHelper = $this->helper('\Magento\Checkout\Helper\Cart');
+
+$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+$listBlock = $objectManager->get('\Magento\Catalog\Block\Product\ListProduct');
+
+?>
+<div class="f-fix appnova_crossell appnova_crossell_cart" id="appnova_crossell_freeonly_container">
+    <ul class="f-fix products list items product-items">
+    <?php
+    //$image = 'cart_page_product_thumbnail';
+    $image = 'mini_cart_product_thumbnail';
+    $k = 0;
+    //Cross sell products
+    foreach ($items as $key => $_item) {
+        if ($_item->isSaleable()) {
+        $_product = $_item;
+        $addToCartUrl =  $listBlock->getAddToCartUrl($_product);
+        $data = $_product->getData();
+        $desc = '';
+        $price = '';
+        if (isset($data['short_description'])) {
+            $desc = $data['short_description'];
+        }
+        if (isset($data['price'])) {
+            $price = '£'.number_format($data['price'],2);
+            if (isset($data['special_price']) && !is_nulll($data['special_price'])) {
+                $price = '£'.number_format($data['special_price'],2);
+            }
+        }
+        ?>
+            <li class="f-left item product product-item">
+            <form data-role="tocart-form" action="<?php echo $addToCartUrl; ?>" method="post">
+                <label for="appnova_crosssell_checkbox_f<?php echo $k ?>"><input type="checkbox" id="appnova_crosssell_f<?php echo $k ?>" name="appnova_crosssell_checkbox_f<?php echo $k ?>" value="1" disabled="disabled" class="appnova_crosssell_checkbox_f"/><span class="wait-clic">+ Add <?php echo $block->escapeHtml($_item->getName()) ?> for only <?php echo $price ?> each</span><span id="appnova_crosssell_f<?php echo $k ?>_wait" class="wait-reload">Please wait - reloading cart</span></label>
+                <?php echo $block->getBlockHtml('formkey')?>
+             </form>
+            <div class="inner">
+                <div class="product-item-info">
+                    <?php $labelsHelper->echoLabels($_product); ?>
+					<?php $objectManager =\Magento\Framework\App\ObjectManager::getInstance();
+					$helperImport = $objectManager->get('\Magento\Catalog\Helper\Image');
+					$imageUrl = $helperImport->init($_product, 'product_page_image_small')
+									->setImageFile($_product->getSmallImage()) // image,small_image,thumbnail
+									->resize(90)
+									->getUrl();
+					
+					?><span class="product-image-container">
+							<span class="product-image-wrapper" style="padding-bottom: 100%;">
+								<img class="product-image-photo" id="product-image-<?= $_item['entity_id'] ?>"
+									 src="<?= $imageUrl ?>"
+									loading="lazy"
+									 alt="<?php echo $block->escapeHtml($_item->getName()) ?>">
+							</span>
+						</span>
+					<?php //echo $block->getImage($_item, $image)->toHtml(); ?>
+
+                </div>
+                <div class="product-item-info-text">
+                    <div class="product-description">
+                        <?php echo $desc; ?>
+                    </div>
+                    <!--<div class="product-description-details">
+                        <a href="<?php echo $block->getProductUrl($_item) ?>">Click here for details</a>
+                    </div>-->
+                </div>
+            </div>
+            </li>
+        <?php
+        }
+        $k++;
+    }
+    ?>
+    </ul>
+    <script>
+    require(['jquery','domReady!'], function($){ 
+        $('.appnova_crosssell_checkbox_f').removeAttr('disabled'); //Do not enable till DOM is ready
+        $('body').on('click', '.appnova_crosssell_checkbox_f', function(e) {
+            e.stopPropagation();        
+            var checkbox = $(this);
+            checkbox.prop('disabled','true');
+            var id = checkbox.attr('id');
+            console.log(id);
+            checkbox.closest('form').addClass('waiting');
+            checkbox.closest('form').trigger('submit');
+        });
+    });
+	</script>
+</div>
+<style>
+    .appnova_crossell_cart .product-items li {
+        margin-top: 10px;
+        margin-bottom: 10px;
+        background-color: #f8f8f8;
+        border: solid 1px #cccccc;
+        width: 100%;
+        padding: 5px !important;
+    }
+    .appnova_crossell_cart .product-items li label {
+        display: inline;
+    }
+    .appnova_crossell_cart .product-items li input[type="checkbox"]{
+        display: inline-block;
+        width: auto;
+        margin-right: 5px;
+    }
+    .appnova_crossell_cart .product-items .product-image-container {
+        min-width: auto;
+        width: 90px !important;
+    }
+    .appnova_crossell_cart .product-items .product-item-info,
+    .appnova_crossell_cart .product-items .product-image-photo {
+        min-width: auto;
+        width: auto;
+        float: left;
+    }
+    .appnova_crossell_cart .product-items .product-item-info {
+        margin-right: 10px;
+    }
+    .appnova_crossell_cart .product-items .product-item-info-text .product-description-details {
+        width: 100%;
+        clear: both;
+    }
+    .appnova_crossell_cart .product-items .product-item-info-text .product-description-details a {
+        color: #009ca6; 
+        padding-left: 5px; 
+        font-size: 12px;
+        font-weight: normal;
+    }
+    .wait-reload {
+        display: none;
+        color: #009ca6; 
+    }
+    .appnova_crossell_cart .product-items li form.waiting label .wait-clic{
+        display: none;
+    }
+    .appnova_crossell_cart .product-items li form.waiting label .wait-reload{
+        display: inline;
+    }
+    .appnova_crossell_cart .product-item .inner:hover .product-image-photo {
+        -webkit-transform: translateZ(0) scale(1);
+        -moz-transform: translateZ(0) scale(1);
+        transform: translateZ(0) scale(1);
+    }
+</style>
+<?php endif; ?>
+<!-- Yogesh freebanner end -->			        	
